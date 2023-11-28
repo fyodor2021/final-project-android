@@ -17,6 +17,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import SplashScreen from './components/SplashScreen';
 import LoginScreen from './components/LoginScreen';
+import RegistrationScreen from './components/RegistrationScreen';
+import HomeScreen from './components/HomeScreen';
+import DetailScreen from './components/DetailScreen';
+import EditScreen from './components/EditScreen';
+import RateScreen from './components/RateScreen';
+import ShareScreen from './components/ShareScreen';
+
 export default function App() {
   const navStack = createStackNavigator();
   return (
@@ -26,11 +33,11 @@ export default function App() {
           <navStack.Screen name="Splash" component={SplashScreen} options={{headerShown: false}}/>
           <navStack.Screen name="Login" component={LoginScreen}/>
           <navStack.Screen name="Registration" component={RegistrationScreen}/>
-          <navStack.Screen name="HomeScreen" component={HomeScreen}/>
-          <navStack.Screen name="DetailScreen" component={DetailScreen}/>
-          <navStack.Screen name="EditScreen" component={EditScreen}/>
-          <navStack.Screen name="RateScreen" component={RateScreen}/>
-          <navStack.Screen name="ShareScreen" component={ShareScreen}/>
+          <navStack.Screen name="Home" component={HomeScreen}/>
+          <navStack.Screen name="Detail" component={DetailScreen}/>
+          <navStack.Screen name="Edit" component={EditScreen}/>
+          <navStack.Screen name="Rate" component={RateScreen}/>
+          <navStack.Screen name="Share" component={ShareScreen}/>
         </navStack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
