@@ -31,7 +31,7 @@ export default function App() {
       <NavigationContainer>
         <navStack.Navigator>
           <navStack.Screen name="Splash" component={SplashScreen} options={{headerShown: false}}/>
-          <navStack.Screen name="Login" component={LoginScreen}/>
+          <navStack.Screen name="Login" component={LoginScreen} options={{ headerLeft:null}}/>
           <navStack.Screen name="Registration" component={RegistrationScreen}/>
           <navStack.Screen name="Home" component={HomeScreen}/>
           <navStack.Screen name="Detail" component={DetailScreen}/>
