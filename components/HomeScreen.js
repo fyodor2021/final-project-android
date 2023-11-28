@@ -11,5 +11,6 @@ import {
 
 
 export default function HomeScreen({navigation}){
-    return <Text>Home Screen</Text>
+
+    return <Text>hello world</Text>
 }
