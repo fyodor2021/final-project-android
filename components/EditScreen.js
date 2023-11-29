@@ -13,6 +13,7 @@ import {
   } from 'react-native';
 import {useState} from 'react'
 import Button from './Button'
+import Input from './Input'
 export default function EditScreen({navigation}){
   navigation.setOptions({
     title:'',
@@ -61,26 +62,11 @@ export default function EditScreen({navigation}){
     </ImageBackground>
       
     <View>
-      <View>
-        <Text style={styles.labels}>Resturant Name:</Text>
-        <TextInput value={name} onChange={handleNameChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Address:</Text>
-        <TextInput value={address} onChange={handleAddressChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Phone Number:</Text>
-        <TextInput value={phoneNumber} onChange={handlePhoneNumberChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Description:</Text>
-        <TextInput value={desc} onChange={handleDescChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Restaurant Tag:</Text>
-        <TextInput value={tags} onChange={handleTagsChange} style={styles.input} />
-      </View>
+      <Input label='Resturant Name:'/>
+      <Input label='Address:'/>
+      <Input label='Phone Number:'/>
+      <Input label='Description:'/>
+      <Input label='Restaurant Tag:'/>
       <Button style={{...styles.button}} text='Edit' onPress={handleEditPress}></Button>
     </View>
 

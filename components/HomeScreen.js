@@ -66,12 +66,12 @@ export default function HomeScreen({ navigation }) {
   const handleDetailPress = () => {
     navigation.navigate('Detail')
   }
-  return<TouchableWithoutFeedback onPress={() => setMenuVisible(false)}>
-    <View>
+   //<TouchableWithoutFeedback onPress={() => setMenuVisible(false)}>
+    return <View>
       <Text>hello world</Text>
       <Button style={styles.button} text="Take me to Detailssss...." onPress={handleDetailPress}></Button>
     </View>
-  </TouchableWithoutFeedback>
+  //</TouchableWithoutFeedback>
 
 }
 
