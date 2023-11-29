@@ -42,7 +42,7 @@ export default function HomeScreen({ navigation }) {
 
               </View> :
               <SafeAreaView style={styles.menuContainer}>
-                <Button style={{ ...styles.button, ...styles.menuItems }} text='Edit'></Button>
+                <Button style={{ ...styles.button, ...styles.menuItems }} text='Edit' onPress={() => navigation.navigate('Edit')}></Button>
                 <Button style={{ ...styles.button, ...styles.menuItems }} text='share'></Button>
                 <Button style={{ ...styles.button, ...styles.menuItems, marginBottom: 25 }} text='Rate'></Button>
               </SafeAreaView>
