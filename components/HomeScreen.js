@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { useState, useLayoutEffect } from 'react';
 import Button from './Button'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 export default function HomeScreen({ navigation }) {
   const [menuVisible, setMenuVisible] = useState(false)
   useLayoutEffect(() => {
@@ -27,7 +28,7 @@ export default function HomeScreen({ navigation }) {
       headerLeft: () => {
         return <TouchableOpacity style={{ marginLeft: 0 }} onPress={() => navigation.goBack()}>
           <View style={styles.backButton} >
-            <Image source={require('../images/goBack.png')} style={{...styles.backImage,width:50, height:50}}/>
+            <Image source={require('../images/goBack.png')} style={{ ...styles.backImage, width: 50, height: 50 }} />
           </View>
 
         </TouchableOpacity>
@@ -37,13 +38,13 @@ export default function HomeScreen({ navigation }) {
           {
             !menuVisible ?
               <View style={{ ...styles.backButton, marginRight: 3 }} >
-              <Image source={require('../images/hamburgerMenu.png')} style={{...styles.backImage,width:20, height:20, marginRight:0}}/>
+                <Image source={require('../images/hamburgerMenu.png')} style={{ ...styles.backImage, width: 20, height: 20, marginRight: 0 }} />
 
-              </View> : 
+              </View> :
               <SafeAreaView style={styles.menuContainer}>
-                  <Button style={{...styles.button, ...styles.menuItems}} text='Edit'></Button>
-                  <Button style={{...styles.button, ...styles.menuItems}} text='share'></Button>
-                  <Button style={{...styles.button, ...styles.menuItems ,marginBottom:25}} text='Rate'></Button>
+                <Button style={{ ...styles.button, ...styles.menuItems }} text='Edit'></Button>
+                <Button style={{ ...styles.button, ...styles.menuItems }} text='share'></Button>
+                <Button style={{ ...styles.button, ...styles.menuItems, marginBottom: 25 }} text='Rate'></Button>
               </SafeAreaView>
 
           }
@@ -53,7 +54,7 @@ export default function HomeScreen({ navigation }) {
       },
       headerStyle: {
         backgroundColor: '#ff5757',
-        
+
       },
       headerTintColor: 'white',
       headerTitleStyle: {
@@ -65,14 +66,13 @@ export default function HomeScreen({ navigation }) {
   const handleDetailPress = () => {
     navigation.navigate('Detail')
   }
-  return 
+  return<TouchableWithoutFeedback onPress={() => setMenuVisible(false)}>
+    <View>
+      <Text>hello world</Text>
+      <Button style={styles.button} text="Take me to Detailssss...." onPress={handleDetailPress}></Button>
+    </View>
+  </TouchableWithoutFeedback>
 
-  <View>
-
-
-    <Text>hello world</Text>
-    <Button style={styles.button} text="Take me to Detailssss...." onPress={handleDetailPress}></Button>
-  </View>
 }
 
 const screen = Dimensions.get('window');
@@ -80,21 +80,21 @@ const styles = StyleSheet.create({
   menuContainer: {
     borderWidth: 1,
     backgroundColor: "#850101",
-    marginTop:50,
+    marginTop: 50,
     borderRadius: 30,
-    opacity:.9,
-    shadowColor:'black',
-    shadowWidth:1,
-    shadowOffset:{width:1, height:5},
-    shadowOpacity:.5,
-    marginRight:5
+    opacity: .9,
+    shadowColor: 'black',
+    shadowWidth: 1,
+    shadowOffset: { width: 1, height: 5 },
+    shadowOpacity: .5,
+    marginRight: 5
   },
   menuItems: {
-    justifyContent:'center',
-    shadowColor:'black',
-    shadowWidth:1,
-    shadowOffset:{width:1, height:5},
-    shadowOpacity:.5
+    justifyContent: 'center',
+    shadowColor: 'black',
+    shadowWidth: 1,
+    shadowOffset: { width: 1, height: 5 },
+    shadowOpacity: .5
   },
 
   button: {
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     padding: 15,
     display: 'flex',
     alignItems: 'center',
-    
+
   },
   searchContainer: {
     display: 'flex',
@@ -126,13 +126,13 @@ const styles = StyleSheet.create({
   backButton: {
     width: 40,
     height: 40,
-    backgroundColor:'#ff5757',
+    backgroundColor: '#ff5757',
     marginLeft: 1,
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center'
   },
-  backImage:{
+  backImage: {
     marginRight: 5
   }
 })
