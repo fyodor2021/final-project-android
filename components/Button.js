@@ -23,17 +23,5 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color:'white'
     },
-    button: {
-        width: screen.width / 1.3,
-        backgroundColor: 'red',
-        borderWidth: 1,
-        marginRight: 40,
-        marginLeft: 40,
-        height: 50,
-        borderRadius: 20,
-        padding: 15,
-        marginTop: 20,
-        display: 'flex',
-        alignItems: 'center'
-      }
+
 })

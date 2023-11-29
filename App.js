@@ -33,7 +33,7 @@ export default function App() {
         <navStack.Screen name="Splash" component={SplashScreen} options={{headerShown: false}}/>
           <navStack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>
           <navStack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
-          <navStack.Screen name="Registration" component={RegistrationScreen}/>
+          <navStack.Screen name="Registration" component={RegistrationScreen} options={registrationOptions}/>
           <navStack.Screen name="Detail" component={DetailScreen}/>
           <navStack.Screen name="Edit" component={EditScreen}/>
           <navStack.Screen name="Rate" component={RateScreen}/>
@@ -53,3 +53,15 @@ const styles = StyleSheet.create({
   },
 
 });
+
+const registrationOptions = {
+  title: '', 
+  headerStyle: {
+    backgroundColor: '#ff5757', 
+    borderRadius:20,
+  },
+  headerTintColor: 'white',
+  headerTitleStyle: {
+    fontWeight: 'bold',
+  }
+}

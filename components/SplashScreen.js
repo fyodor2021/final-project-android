@@ -11,17 +11,16 @@ import {
   View,
   Dimensions,
 } from 'react-native';
-
+import Button from './Button';
 
 export default function SplashScreen({ navigation }) {
 
-  useEffect(() => {
-    setInterval(() => {
-      navigation.navigate('Login')
-    }, 3000)
-  })
+    useEffect(() => {
+      setTimeout(() => {
+        navigation.navigate('Login')
+      }, 3000)
+    })
 
-    
     return <SafeAreaView>
     {/* <Image source={require("../images/ourLogo.png")} /> */}
     {/* <Image source={require("../images/pexels-pixabay-262978.jpg")} style={styles.dishImage}/> */}
@@ -42,7 +41,6 @@ export default function SplashScreen({ navigation }) {
           </View>
         </View>
       </View>
-
     </ImageBackground>
   </SafeAreaView>
 
