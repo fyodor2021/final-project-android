@@ -12,7 +12,29 @@ import {
 } from 'react-native';
 import {useState} from 'react'
 import Button from './Button'
+import {useLayoutEffect} from 'react'
 const RegistrationScreen = ({ navigation }) => {
+  useLayoutEffect(() => {
+
+navigation.setOptions({
+  title:'',
+  headerStyle: {
+    backgroundColor: '#ff5757', 
+  },
+  headerTintColor: 'white',
+  headerTitleStyle: {
+    fontWeight: 'bold',
+  },
+  headerLeft: () => {
+    return <TouchableOpacity style={{ marginLeft: 0 }} onPress={() => navigation.goBack()}>
+          <View style={styles.backButton} >
+            <Image source={require('../images/goBack.png')} style={{ ...styles.backImage, width: 50, height: 50 }} />
+          </View>
+
+        </TouchableOpacity>
+  }
+})
+  })
   const [email, setEmail] = useState();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
@@ -155,6 +177,18 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     marginTop: 25
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    backgroundColor: '#ff5757',
+    marginLeft: 1,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  backImage: {
+    marginRight: 5
   }
 })
 
