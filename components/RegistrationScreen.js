@@ -10,37 +10,22 @@ import {
   View,
   TextInput,
 } from 'react-native';
-import {useState} from 'react'
+import { useState } from 'react'
 import Button from './Button'
-import {useLayoutEffect} from 'react'
+import { useLayoutEffect } from 'react'
 import Input from './Input'
 const RegistrationScreen = ({ navigation }) => {
   useLayoutEffect(() => {
 
-navigation.setOptions({
-  title:'',
-  headerStyle: {
-    backgroundColor: '#ff5757', 
-  },
-  headerTintColor: 'white',
-  headerTitleStyle: {
-    fontWeight: 'bold',
-  },
-  headerLeft: () => {
-    return <TouchableOpacity style={{ marginLeft: 0 }} onPress={() => navigation.goBack()}>
-          <View style={styles.backButton} >
-            <Image source={require('../images/goBack.png')} style={{ ...styles.backImage, width: 50, height: 50 }} />
-          </View>
-
-        </TouchableOpacity>
-  }
-})
+    navigation.setOptions({
+      headerShown: false
+    })
   })
 
   const handleRegisterPress = () => {
     navigation.navigate('Login')
   }
-  
+
   return <SafeAreaView style={styles.container}>
     <View style={styles.logoContainer}>
       <View style={styles.rContainer}>
@@ -59,13 +44,15 @@ navigation.setOptions({
       </View>
     </View>
     <View>
-      <Input label="Email:"/>
-      <Input label="User Name:"/>
-      <Input label="Password:"/>
-      <Input label="Address:"/>
-      <Input label="Date of Birth:"/>
-
-      <Button style={{...styles.button}} text='Register' onPress={handleRegisterPress}></Button>
+      <Input label="Email:" />
+      <Input label="User Name:" />
+      <Input label="Password:" />
+      <Input label="Address:" />
+      <Input label="Date of Birth:" />
+      <View style={{ display: 'flex', flexDirection: 'row' }}>
+        <Button style={{ ...styles.button, marginRight: 0, width: screen.width / 3 }} text='Back' onPress={() => navigation.goBack()}></Button>
+        <Button style={{ ...styles.button, width: screen.width / 3 }} text='Register' onPress={handleRegisterPress}></Button>
+      </View>
     </View>
 
   </SafeAreaView>
