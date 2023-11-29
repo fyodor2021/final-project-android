@@ -30,7 +30,6 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <NavigationContainer>
         <navStack.Navigator>
-
         <navStack.Screen name="Splash" component={SplashScreen} options={{headerShown: false}}/>
           <navStack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>
           <navStack.Screen name="Home" component={HomeScreen}/>

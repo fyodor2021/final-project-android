@@ -11,21 +11,15 @@ import {
   View,
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import Button from "./Button"
+import Button from './Button'
+import Input from './Input'
 
 export default function LoginScreen({ navigation }) {
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
   const handleLoginPress = () => {
     console.log('handle press')
     navigation.navigate('Home')
   }
-  const handleUserChange = (user) => {
-    setUsername(user)
-  }
-  const handlePassChange = (password) => {
-    setPassword(password)
-  }
+
   const handleRegister = () => {
     navigation.navigate('Registration')
   }
@@ -47,14 +41,8 @@ export default function LoginScreen({ navigation }) {
       </View>
     </View>
     <View>
-      <View>
-        <Text style={styles.labels}>User Name:</Text>
-        <TextInput value={username} onChange={handleUserChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Password:</Text>
-        <TextInput value={password} onChange={handlePassChange} style={styles.input} />
-      </View>
+      <Input label='User Name:'/>
+      <Input label='Password:'/>
       <View>
         <Button style={{ ...styles.button, marginTop: 10 }} text="Log in" onPress={handleLoginPress}></Button>
       </View>

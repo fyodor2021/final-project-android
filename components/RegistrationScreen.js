@@ -13,6 +13,7 @@ import {
 import {useState} from 'react'
 import Button from './Button'
 import {useLayoutEffect} from 'react'
+import Input from './Input'
 const RegistrationScreen = ({ navigation }) => {
   useLayoutEffect(() => {
 
@@ -35,29 +36,10 @@ navigation.setOptions({
   }
 })
   })
-  const [email, setEmail] = useState();
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
-  const [address, setAddress] = useState();
-  const [dob, setDob] = useState();
+
   const handleRegisterPress = () => {
     navigation.navigate('Login')
   }
-  const handleEmailChange = (value) => {
-    setEmail(value)
-  }  
-  const handleUsernameChange = (value) => {
-    setUsername(value)
-  }  
-  const handlePasswordChange = (value) => {
-    setPassword(value)
-  }  
-  const handleAddressChange = (value) => {
-    setAddress(value)
-  }  
-  const handleDobChange = (value) => {
-    setDob(value)
-  }  
   
   return <SafeAreaView style={styles.container}>
     <View style={styles.logoContainer}>
@@ -77,26 +59,12 @@ navigation.setOptions({
       </View>
     </View>
     <View>
-      <View>
-        <Text style={styles.labels}>Email:</Text>
-        <TextInput value={email} onChange={handleEmailChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>User Name:</Text>
-        <TextInput value={username} onChange={handleUsernameChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Password:</Text>
-        <TextInput value={password} onChange={handlePasswordChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Address:</Text>
-        <TextInput value={address} onChange={handleAddressChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Date of Birth:</Text>
-        <TextInput value={dob} onChange={handleDobChange} style={styles.input} />
-      </View>
+      <Input label="Email:"/>
+      <Input label="User Name:"/>
+      <Input label="Password:"/>
+      <Input label="Address:"/>
+      <Input label="Date of Birth:"/>
+
       <Button style={{...styles.button}} text='Register' onPress={handleRegisterPress}></Button>
     </View>
 
@@ -146,25 +114,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
 
   },
-  input: {
-    width: screen.width / 1.3,
-    backgroundColor: 'white',
-    borderWidth: 1,
-    marginRight: 40,
-    marginLeft: 40,
-    height: 50,
-    borderRadius: 20,
-    padding: 15
-  },
-  labels: {
-    fontSize: 20,
-    margin: 50,
-    marginBottom: 5,
-    marginTop: 5,
-    color: 'gray',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
+
   button: {
     width: screen.width / 1.3,
     backgroundColor: '#ff5757',
