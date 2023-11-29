@@ -11,5 +11,5 @@ import {
 
 
 export default function EditScreen({navigation}){
-    return <Text>Edit Screen</Text>
+    return  <Text>Edit Screen</Text>
 }

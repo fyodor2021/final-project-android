@@ -11,5 +11,10 @@ import {
 
 
 export default function LoginScreen({navigation}){
-    return <Text>LoginScreen</Text>
+    return <TouchableOpacity  onPress={() => navigation.navigate("Detail")}>
+
+    <Text>
+        Details
+    </Text>
+    </TouchableOpacity>
 }
