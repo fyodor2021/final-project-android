@@ -12,7 +12,21 @@ import {
 } from 'react-native';
 import {useState} from 'react'
 import Button from './Button'
+import {useLayoutEffect} from 'react'
 const RegistrationScreen = ({ navigation }) => {
+  useLayoutEffect(() => {
+
+navigation.setOptions({
+  headerStyle: {
+    backgroundColor: '#ff5757', 
+    borderRadius:20,
+  },
+  headerTintColor: 'white',
+  headerTitleStyle: {
+    fontWeight: 'bold',
+  }
+})
+  })
   const [email, setEmail] = useState();
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
