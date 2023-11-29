@@ -18,7 +18,7 @@ export default function LoginScreen({ navigation }) {
   const [password, setPassword] = useState();
   const handleLoginPress = () => {
     console.log('handle press')
-    navigation.navigate('Detail')
+    navigation.navigate('Home')
   }
   const handleUserChange = (user) => {
     setUsername(user)
