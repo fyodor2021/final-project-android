@@ -14,7 +14,7 @@ import {
 export default function ShareScreen({navigation}){
     return (
       <SafeAreaView style={styles.container}>
-      <Image style={styles.image} source='https://picsum.photos/200/200'/>
+      <Image style={styles.image} source={require('../images/fries.png')}/>
       <View style={styles.container2} >
            <TouchableOpacity style={[styles.button, { backgroundColor: '#3b5998' }]}  onClick={() => navigation.navigate("")}>
               <Image source={require('../images/facebook.png')} style={styles.icon} />
