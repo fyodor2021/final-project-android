@@ -14,11 +14,10 @@ import { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-
-import SplashScreen from './components/SplashScreen';
+import SplashScreen from './components/SplashScreen'
 import LoginScreen from './components/LoginScreen';
-import RegistrationScreen from './components/RegistrationScreen';
 import HomeScreen from './components/HomeScreen';
+import RegistrationScreen from './components/RegistrationScreen';
 import DetailScreen from './components/DetailScreen';
 import EditScreen from './components/EditScreen';
 import RateScreen from './components/RateScreen';
@@ -30,10 +29,11 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <NavigationContainer>
         <navStack.Navigator>
-          <navStack.Screen name="Splash" component={SplashScreen} options={{headerShown: false}}/>
-          <navStack.Screen name="Login" component={LoginScreen}/>
+
+        <navStack.Screen name="Splash" component={SplashScreen} options={{headerShown: false}}/>
+          <navStack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>
+          <navStack.Screen name="Home" component={HomeScreen} options={{headerShown: false}}/>
           <navStack.Screen name="Registration" component={RegistrationScreen}/>
-          <navStack.Screen name="Home" component={HomeScreen}/>
           <navStack.Screen name="Detail" component={DetailScreen}/>
           <navStack.Screen name="Edit" component={EditScreen}/>
           <navStack.Screen name="Rate" component={RateScreen}/>
