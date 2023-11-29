@@ -27,7 +27,7 @@ export default function HomeScreen({ navigation }) {
       headerLeft: () => {
         return <TouchableOpacity style={{ marginLeft: 0 }} onPress={() => navigation.goBack()}>
           <View style={styles.backButton} >
-            <Text style={styles.backText}>{'<'}</Text>
+            <Image source={require('../images/goBack.png')} style={{...styles.backImage,width:50, height:50}}/>
           </View>
 
         </TouchableOpacity>
@@ -37,17 +37,23 @@ export default function HomeScreen({ navigation }) {
           {
             !menuVisible ?
               <View style={{ ...styles.backButton, marginRight: 3 }} >
-                <Text style={styles.backText}>{'='}</Text>
-              </View> : <View></View>
+              <Image source={require('../images/hamburgerMenu.png')} style={{...styles.backImage,width:20, height:20, marginRight:0}}/>
 
-        }
+              </View> : 
+              <SafeAreaView style={styles.menuContainer}>
+                  <Button style={{...styles.button, ...styles.menuItems}} text='Edit'></Button>
+                  <Button style={{...styles.button, ...styles.menuItems}} text='share'></Button>
+                  <Button style={{...styles.button, ...styles.menuItems ,marginBottom:25}} text='Rate'></Button>
+              </SafeAreaView>
+
+          }
 
 
         </TouchableOpacity>
       },
       headerStyle: {
         backgroundColor: '#ff5757',
-        borderRadius: 20,
+        
       },
       headerTintColor: 'white',
       headerTitleStyle: {
@@ -59,7 +65,9 @@ export default function HomeScreen({ navigation }) {
   const handleDetailPress = () => {
     navigation.navigate('Detail')
   }
-  return <View>
+  return 
+
+  <View>
 
 
     <Text>hello world</Text>
@@ -69,18 +77,39 @@ export default function HomeScreen({ navigation }) {
 
 const screen = Dimensions.get('window');
 const styles = StyleSheet.create({
+  menuContainer: {
+    borderWidth: 1,
+    backgroundColor: "#850101",
+    marginTop:50,
+    borderRadius: 30,
+    opacity:.9,
+    shadowColor:'black',
+    shadowWidth:1,
+    shadowOffset:{width:1, height:5},
+    shadowOpacity:.5,
+    marginRight:5
+  },
+  menuItems: {
+    justifyContent:'center',
+    shadowColor:'black',
+    shadowWidth:1,
+    shadowOffset:{width:1, height:5},
+    shadowOpacity:.5
+  },
+
   button: {
     width: screen.width / 1.3,
     backgroundColor: '#ff5757',
     borderWidth: 1,
     marginRight: 40,
     marginLeft: 40,
+    marginTop: 25,
     height: 50,
     borderRadius: 20,
     padding: 15,
     display: 'flex',
     alignItems: 'center',
-    marginTop: 25
+    
   },
   searchContainer: {
     display: 'flex',
@@ -90,26 +119,20 @@ const styles = StyleSheet.create({
   searchInput: {
     width: screen.width / 1.6,
     backgroundColor: 'white',
-    borderWidth: 1,
     height: 40,
-    borderRadius: 20,
-    padding: 15
+    borderRadius: 10,
+    padding: 8
   },
   backButton: {
     width: 40,
     height: 40,
-    borderWidth: 1,
-    borderColor: 'black',
-    backgroundColor: 'black',
-    marginLeft: 3,
+    backgroundColor:'#ff5757',
+    marginLeft: 1,
     borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center'
   },
-  backText: {
-
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'white',
-  },
+  backImage:{
+    marginRight: 5
+  }
 })
