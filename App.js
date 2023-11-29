@@ -23,7 +23,6 @@ import DetailScreen from './components/DetailScreen';
 import EditScreen from './components/EditScreen';
 import RateScreen from './components/RateScreen';
 import ShareScreen from './components/ShareScreen';
-import { TextInput } from 'react-native-gesture-handler';
 
 export default function App() {
   const navStack = createStackNavigator();
@@ -34,8 +33,8 @@ export default function App() {
 
         <navStack.Screen name="Splash" component={SplashScreen} options={{headerShown: false}}/>
           <navStack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>
-          <navStack.Screen name="Home" component={HomeScreen} options={homeOptions}/>
-          <navStack.Screen name="Registration" component={RegistrationScreen} options={registrationOptions}/>
+          <navStack.Screen name="Home" component={HomeScreen}/>
+          <navStack.Screen name="Registration" component={RegistrationScreen}/>
           <navStack.Screen name="Detail" component={DetailScreen}/>
           <navStack.Screen name="Edit" component={EditScreen}/>
           <navStack.Screen name="Rate" component={RateScreen}/>
@@ -57,39 +56,9 @@ const styles = StyleSheet.create({
     width: screen.width / 1.3,
     backgroundColor: 'white',
     borderWidth: 1,
-    marginRight: 40,
-    marginLeft: 40,
-    height: 50,
+    height: 30,
     borderRadius: 20,
     padding: 15
   }
 });
 
-const registrationOptions = {
-  headerStyle: {
-    backgroundColor: '#ff5757', 
-    borderRadius:20,
-  },
-  headerTintColor: 'white',
-  headerTitleStyle: {
-    fontWeight: 'bold',
-  }
-}
-const homeOptions = {
-  headerTitle: () =>{
-    <View style={styles.input}>
-      <TextInput style={styles.input} placeholder='Search'>
-
-      </TextInput>
-    </View>
-  },
-  headerStyle: {
-    backgroundColor: '#ff5757', 
-    borderRadius:20,
-  },
-  headerTintColor: 'white',
-  headerTitleStyle: {
-    fontWeight: 'bold',
-  },
-
-}
