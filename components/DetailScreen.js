@@ -1,4 +1,5 @@
-import { Button } from 'react-native';
+// import { Button } from 'react-native';
+import Button  from './Button';
 import {
     Text,
     SafeAreaView,
@@ -12,6 +13,9 @@ import {
 
 
 export default function DetailScreen({navigation}){
+  const Share = () => {
+    navigation.navigate('Share')
+  }
     return (
       <SafeAreaView style={styles.container}>
        <Image style={styles.image} source='https://picsum.photos/200/200'/>
@@ -21,10 +25,9 @@ export default function DetailScreen({navigation}){
             <Text  style={styles.text}> Phone Number</Text>
             <Text  style={styles.text}> Resturant Tags</Text>
        </View>
-       <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
-            <TouchableOpacity style={styles.button}  onClick={() => navigation.navigate("Direction")}>
-               <Text style={styles.buttonText}>Direction</Text>
-            </TouchableOpacity>
+       <View >
+            <Button style={styles.button}  text="Direction" onPress={Share}/>
+            
       </View>
 
       </SafeAreaView>
@@ -55,15 +58,17 @@ const styles = StyleSheet.create({
   },
     button: {
     marginBottom: 60,
-    width : imageWidth -10,
-    backgroundColor: '#FF5757',
-    paddingVertical: 15,
-    paddingHorizontal: 24,
-    borderRadius: 25, 
-    borderWidth: 3,
-    borderColor: 'black',
+    width: screen.width / 1.3,
+    backgroundColor: '#ff5757',
+    borderWidth: 1,
+    marginRight: 40,
+    marginLeft: 40,
+    height: 50,
+    borderRadius: 20,
+    padding: 15,
+    display: 'flex',
     alignItems: 'center',
-
+    marginTop: 25,
   },
     buttonText:{
       color: 'white',
