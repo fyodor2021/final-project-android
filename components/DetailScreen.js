@@ -65,9 +65,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
 
   },
-    color: 'white',
-    fontSize: 18,
-   
+    buttonText:{
+      color: 'white',
+      fontSize: 18,
+    
   },
   image:{
     height: imageHeight,

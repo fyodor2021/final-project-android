@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   Text,
   SafeAreaView,
@@ -15,16 +16,18 @@ import Button from "./Button"
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
-  const handlePress = () => {
-    navigation.navigate('Registration')
-
+  const handleLoginPress = () => {
+    console.log('handle press')
+    navigation.navigate('Detail')
   }
   const handleUserChange = (user) => {
     setUsername(user)
-  }  
+  }
   const handlePassChange = (password) => {
     setPassword(password)
-    
+  }
+  const handleRegister = () => {
+    navigation.navigate('Registration')
   }
   return <SafeAreaView style={styles.container}>
     <View style={styles.logoContainer}>
@@ -50,14 +53,14 @@ export default function LoginScreen({ navigation }) {
       </View>
       <View>
         <Text style={styles.labels}>Password:</Text>
-        <TextInput value={password} onChange={handlePassChange}style={styles.input} />
+        <TextInput value={password} onChange={handlePassChange} style={styles.input} />
       </View>
       <View>
-        <Button style={{ ...styles.button, marginTop: 10 }} text="Log in" onPress={handlePress}></Button>
+        <Button style={{ ...styles.button, marginTop: 10 }} text="Log in" onPress={handleLoginPress}></Button>
       </View>
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-      <Text style={{ ...styles.labels, color: 'red', margin: 0 }}>L</Text>
+      <Text style={{ ...styles.labels, color: '#ff5757', margin: 0 }}>L</Text>
       <Text style={{ ...styles.labels, margin: 0 }}>ogin with</Text>
     </View>
     <View style={{ display: 'flex', flexDirection: 'row' }}>
@@ -65,8 +68,10 @@ export default function LoginScreen({ navigation }) {
       <Button style={{ ...styles.button, backgroundColor: 'black', width: screen.width / 3, marginLeft: 0 }} text="twitter" />
     </View>
     <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-      <Text style={{ ...styles.labels, color: 'red', margin: 0 }}>or </Text>
-      <Text style={{ ...styles.labels, margin: 0 }}>Register</Text>
+      <Text style={{ ...styles.labels, color: '#ff5757', margin: 0 }}>or </Text>
+      <TouchableOpacity onPress={handleRegister}>
+        <Text style={{ ...styles.labels, margin: 0 }} >Register</Text>
+      </TouchableOpacity>
     </View>
   </SafeAreaView>
 }
@@ -78,21 +83,21 @@ const styles = StyleSheet.create({
   },
   rContainer: {
     display: 'flex',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
 
   },
   logoContainer: {
     display: 'flex',
     flexDirection: 'row',
     backgroundColor: 'white',
-    margin: 20,
-    borderRadius: 39
+    borderRadius: 39,
+    justifyContent:'center',
+    margin: 20
   },
   textContainer: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'flex-start',
-    marginTop: 80,
+    justifyContent: 'center',
   },
   text: {
     color: 'gray',
@@ -132,7 +137,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: screen.width / 1.3,
-    backgroundColor: 'red',
+    backgroundColor: '#ff5757',
     borderWidth: 1,
     marginRight: 40,
     marginLeft: 40,
