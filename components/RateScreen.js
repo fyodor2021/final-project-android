@@ -7,6 +7,7 @@ import {
     Image,
     TouchableOpacity,
     View,
+    Dimensions
   } from 'react-native';
 
 
@@ -69,7 +70,7 @@ icon :{
   height: 50
 },
 image:{
-  height: imageHeight,
+  height: '55%',
   width: imageWidth,
   padding: 5
 }
