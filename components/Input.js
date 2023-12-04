@@ -15,7 +15,7 @@ export default function Input({label, state}) {
     }
     return       <View>
     <Text style={styles.labels}>{label}</Text>
-    <TextInput value={input} onChangeText={handleChange} style={styles.input} />
+    <TextInput value={input} autoCapitalize='none' onChangeText={handleChange} style={styles.input} />
   </View>
 }
 const screen = Dimensions.get('window');
