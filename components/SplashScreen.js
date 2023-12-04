@@ -10,6 +10,7 @@ import {
   Image,
   View,
   Dimensions,
+  PixelRatio,
 } from 'react-native';
 import Button from './Button';
 
@@ -21,7 +22,7 @@ export default function SplashScreen({ navigation }) {
       }, 3000)
     })
 
-    return <SafeAreaView>
+    return <SafeAreaView style={{padding: 0}}>
     {/* <Image source={require("../images/ourLogo.png")} /> */}
     {/* <Image source={require("../images/pexels-pixabay-262978.jpg")} style={styles.dishImage}/> */}
     <ImageBackground source={require('../images/pexels-pixabay-262978.jpg')} style={styles.dishImage} blurRadius={8}>
@@ -56,7 +57,9 @@ const styles = StyleSheet.create({
   
   container:{
     display:'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent:'center',
+    alignItems: 'center'
   },
   textContainer: {
       display: 'flex',
@@ -74,14 +77,13 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
   },
   dishImage: {
-    height: screen.height,
+    height: screen.height +107.8,
     width: screen.width,
-    
   },
   logoImage: {
     width: screen.width / 1.6,
-    height: screen.height / 1.2,
-    marginLeft: 20,
+    height: screen.height /1.2,
+    marginLeft: 10,
     resizeMode: 'contain',
 
   }

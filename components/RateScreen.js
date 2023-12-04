@@ -137,12 +137,13 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30
   },
-
-  image:{
-    height: '55%',
-    width: imageWidth,
-  },
-  text: {
-    marginVertical: 5
-  }
+image:{
+  height: '55%',
+  width: imageWidth,
+  padding: 5
+},
+  icon :{
+  width: 50,
+  height: 50
+}
 });

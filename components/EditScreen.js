@@ -13,6 +13,7 @@ import {
   } from 'react-native';
 import {useState} from 'react'
 import Button from './Button'
+import Input from './Input'
 export default function EditScreen({navigation}){
   navigation.setOptions({
     title:'',
@@ -59,31 +60,14 @@ export default function EditScreen({navigation}){
     <ImageBackground source={require('../images/restaurant.jpg')} style={styles.backgroundImage}>
         <Button style={styles.uploadButton} text='Upload'></Button>
     </ImageBackground>
-      
     <View>
-      <View>
-        <Text style={styles.labels}>Resturant Name:</Text>
-        <TextInput value={name} onChange={handleNameChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Address:</Text>
-        <TextInput value={address} onChange={handleAddressChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Phone Number:</Text>
-        <TextInput value={phoneNumber} onChange={handlePhoneNumberChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Description:</Text>
-        <TextInput value={desc} onChange={handleDescChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Restaurant Tag:</Text>
-        <TextInput value={tags} onChange={handleTagsChange} style={styles.input} />
-      </View>
+      <Input label='Resturant Name:' state={[name, setName]}/>
+      <Input label='Address:' state={[address, setAddress]}/>
+      <Input label='Phone Number:' state={[phoneNumber, setPhoneNumber]}/>
+      <Input label='Description:' state={[desc, setDesc]}/>
+      <Input label='Restaurant Tag:' state={[tags, setTags]}/>
       <Button style={{...styles.button}} text='Edit' onPress={handleEditPress}></Button>
     </View>
-
   </SafeAreaView>
 }
 
