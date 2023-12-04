@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     height: 50,
     borderRadius: 20,
-    padding: 15,
+    padding: 10,
     display: 'flex',
     alignItems: 'center'
   }

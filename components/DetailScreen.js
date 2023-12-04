@@ -46,28 +46,25 @@ export default function DetailScreen({ navigation }) {
   const Rate = () => {
     navigation.navigate('Rate')
   }
-  return <View>{menuVisible ?
-    <View style={styles.menuContainer}>
-      <Button style={{ ...styles.button, ...styles.menuItems }} text='Edit' onPress={() => navigation.navigate('Edit')}></Button>
-      <Button style={{ ...styles.button, ...styles.menuItems }} text='share' onPress={() => navigation.navigate('Share')}></Button>
-      <Button style={{ ...styles.button, ...styles.menuItems }} text='Rate' onPress={() => navigation.navigate('Rate')}></Button>
-    </View> :
-    <SafeAreaView style={styles.container}>
+  return <View>
+    {menuVisible && (
+      <View style={styles.menuContainer}>
+        <Button style={{ ...styles.button, ...styles.menuItems }} text='Edit' onPress={() => navigation.navigate('Edit')}></Button>
+        <Button style={{ ...styles.button, ...styles.menuItems }} text='Share' onPress={() => navigation.navigate('Share')}></Button>
+        <Button style={{ ...styles.button, ...styles.menuItems }} text='Rate' onPress={() => navigation.navigate('Rate')}></Button>
+      </View>
+    )}
+<View>
+    <View style={styles.container}>
       <Image style={styles.image} source={require('../images/fries.png')} />
       <View style={styles.container2}>
-        <Text style={styles.text} >Name</Text>
-        <Text style={styles.text}> Adress</Text>
-        <Text style={styles.text}> Phone Number</Text>
-        <Text style={styles.text}> Resturant Tags</Text>
+        <Text style={styles.text}>Name</Text>
+        <Text style={styles.text}>Address</Text>
+        <Text style={styles.text}>Phone Number</Text>
+        <Text style={styles.text}>Restaurant Tags</Text>
       </View>
-      <View >
-        <Button style={styles.button} text="Direction" onPress={Share} />
-        <Button style={styles.button} text="Rate" onPress={Rate} />
-
-
-      </View>
-
-    </SafeAreaView>}
+    </View>
+    </View>
   </View>
 
 
@@ -79,22 +76,17 @@ const imageHeight = screen.height / 2;
 
 
 
-
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#ecf0f1',
     padding: 8,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   container2: {
     marginVertical: 10,
     marginHorizontal: 5,
-
   },
   button: {
-    marginBottom: 60,
     width: screen.width / 1.3,
     backgroundColor: '#ff5757',
     borderWidth: 1,
@@ -103,21 +95,19 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 20,
     padding: 15,
-    display: 'flex',
     alignItems: 'center',
     marginTop: 25,
   },
   buttonText: {
     color: 'white',
     fontSize: 18,
-
   },
   image: {
-    height: imageHeight,
-    width: imageWidth,
-    padding: 5
+    height: imageHeight, 
+    width: imageWidth, 
+    padding: 5,
   },
   text: {
-    marginVertical: 5
+    marginVertical: 5,
   }
 });
