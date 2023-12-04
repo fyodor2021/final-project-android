@@ -23,26 +23,30 @@ import DetailScreen from './components/DetailScreen';
 import EditScreen from './components/EditScreen';
 import RateScreen from './components/RateScreen';
 import ShareScreen from './components/ShareScreen';
+import { Provider } from './components/context/UserContext'
+
+const navStack = createStackNavigator();
 
 export default function App() {
-  const navStack = createStackNavigator();
   return (
-    <SafeAreaView style={styles.container}>
-      <NavigationContainer>
-        <navStack.Navigator >
-        <navStack.Screen name="Splash" component={SplashScreen} options={{ backBehavior: 'none', headerLeft: null, headerShown: false, gestureEnabled: false}}/>
-          <navStack.Screen name="Login" component={LoginScreen} options={{headerShown: false, gestureEnabled:false}}/>
-          <navStack.Screen name="Home" component={HomeScreen}/>
-          <navStack.Screen name="Registration" component={RegistrationScreen}/>
-          <navStack.Screen name="Detail" component={DetailScreen}/>
-          <navStack.Screen name="Edit" component={EditScreen}/>
-          <navStack.Screen name="Rate" component={RateScreen}/>
-          <navStack.Screen name="Share" component={ShareScreen}/>
-        </navStack.Navigator>
-      </NavigationContainer>
-    </SafeAreaView>
+    <Provider>
+      <SafeAreaView style={styles.container}>
+        <NavigationContainer>
+          <navStack.Navigator>
+            <navStack.Screen name="Splash" component={SplashScreen} options={{ backBehavior: 'none', headerLeft: null, headerShown: false, gestureEnabled: false }} />
+            <navStack.Screen name="Login" component={LoginScreen} options={{ headerShown: false, gestureEnabled: false }} />
+            <navStack.Screen name="Home" component={HomeScreen} />
+            <navStack.Screen name="Registration" component={RegistrationScreen} />
+            <navStack.Screen name="Detail" component={DetailScreen} />
+            <navStack.Screen name="Edit" component={EditScreen} />
+            <navStack.Screen name="Rate" component={RateScreen} />
+            <navStack.Screen name="Share" component={ShareScreen} />
+          </navStack.Navigator>
+        </NavigationContainer>
+      </SafeAreaView>
+    </Provider>
   );
-  }
+}
 const screen = Dimensions.get('window')
 const styles = StyleSheet.create({
   container: {

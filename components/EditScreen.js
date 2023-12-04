@@ -60,16 +60,14 @@ export default function EditScreen({navigation}){
     <ImageBackground source={require('../images/restaurant.jpg')} style={styles.backgroundImage}>
         <Button style={styles.uploadButton} text='Upload'></Button>
     </ImageBackground>
-      
     <View>
-      <Input label='Resturant Name:'/>
-      <Input label='Address:'/>
-      <Input label='Phone Number:'/>
-      <Input label='Description:'/>
-      <Input label='Restaurant Tag:'/>
+      <Input label='Resturant Name:' state={[name, setName]}/>
+      <Input label='Address:' state={[address, setAddress]}/>
+      <Input label='Phone Number:' state={[phoneNumber, setPhoneNumber]}/>
+      <Input label='Description:' state={[desc, setDesc]}/>
+      <Input label='Restaurant Tag:' state={[tags, setTags]}/>
       <Button style={{...styles.button}} text='Edit' onPress={handleEditPress}></Button>
     </View>
-
   </SafeAreaView>
 }
 

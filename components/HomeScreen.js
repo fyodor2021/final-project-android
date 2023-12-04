@@ -10,11 +10,22 @@ import {
   View,
   TextInput
 } from 'react-native';
-import { useState, useLayoutEffect } from 'react';
+import { useState, useLayoutEffect, useContext } from 'react';
 import Button from './Button'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { signOut } from 'firebase/auth';
+import { auth } from './firebase-auth';
+import UserContext from './context/UserContext';
+import LoginScreen from './LoginScreen';
 export default function HomeScreen({ navigation }) {
   const [menuVisible, setMenuVisible] = useState(false)
+  const { signedState } = useContext(UserContext)
+  const [signedIn, setSignedIn] = signedState
+  const handleLogoutPress = () => {
+    signOut(auth).then()
+      .catch(error => console.log(error))
+      setSignedIn(!signedIn)
+  }
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: () => {
@@ -29,9 +40,9 @@ export default function HomeScreen({ navigation }) {
       ,
       headerRight: () => {
         return <TouchableOpacity style={{ marginLeft: 0 }} onPress={() => setMenuVisible(!menuVisible)}>
-              <View style={{ ...styles.backButton, marginRight: 3 }} >
-                <Image source={require('../images/hamburgerMenu.png')} style={{ ...styles.backImage, width: 20, height: 20, marginRight: 0 }} />
-              </View> 
+          <View style={{ ...styles.backButton, marginRight: 3 }} >
+            <Image source={require('../images/hamburgerMenu.png')} style={{ ...styles.backImage, width: 20, height: 20, marginRight: 0 }} />
+          </View>
         </TouchableOpacity>
       },
       headerStyle: {
@@ -44,19 +55,21 @@ export default function HomeScreen({ navigation }) {
       },
 
     })
-  })
+  }, [])
   const handleDetailPress = () => {
     navigation.navigate('Detail')
   }
-return <TouchableWithoutFeedback>{!menuVisible ?
-<View>
-    <Text>hello world</Text>
-    <Button style={styles.button} text="Take me to Detailssss...." onPress={handleDetailPress}></Button>
-  </View>: <SafeAreaView style={styles.menuContainer}>
-    <Button style={{ ...styles.button, ...styles.menuItems }} text='Edit' onPress={() => navigation.navigate('Edit')}></Button>
-    <Button style={{ ...styles.button, ...styles.menuItems }} text='share'></Button>
-    <Button style={{ ...styles.button, ...styles.menuItems, marginBottom: 25 }} text='Rate'></Button>
-  </SafeAreaView>}</TouchableWithoutFeedback>
+  return signedIn ? <SafeAreaView style={{ width: '14444' }}><TouchableWithoutFeedback>{!menuVisible ?
+    <View>
+      <Text>hello world</Text>
+      <Button style={styles.button} text="Take me to Detailssss...." onPress={handleDetailPress}></Button>
+    </View > : <SafeAreaView style={styles.menuContainer}>
+      <Button style={{ ...styles.button, ...styles.menuItems }} text='Edit' onPress={() => navigation.navigate('Edit')}></Button>
+      <Button style={{ ...styles.button, ...styles.menuItems }} text='share'></Button>
+      <Button style={{ ...styles.button, ...styles.menuItems }} text='Rate'></Button>
+      <Button style={{ ...styles.button, ...styles.menuItems, marginBottom: 25 }} onPress={handleLogoutPress} text='Logout'></Button>
+
+    </SafeAreaView>}</TouchableWithoutFeedback></SafeAreaView> : <LoginScreen/>
 }
 
 
@@ -72,18 +85,23 @@ const styles = StyleSheet.create({
     shadowWidth: 1,
     shadowOffset: { width: 1, height: 5 },
     shadowOpacity: .5,
-    width: screen.width
+    width: screen.width,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   menuItems: {
     justifyContent: 'center',
     shadowColor: 'black',
     shadowWidth: 1,
     shadowOffset: { width: 1, height: 5 },
-    shadowOpacity: .5
+    shadowOpacity: .5,
+    width: screen.width / 2,
+
   },
 
   button: {
-    width: screen.width / 1.3,
+    justifyContent: 'center',
+    width: 90,
     backgroundColor: '#ff5757',
     borderWidth: 1,
     marginRight: 40,
@@ -91,7 +109,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
     height: 50,
     borderRadius: 20,
-    padding: 15,
+    padding: 10,
     display: 'flex',
     alignItems: 'center',
 

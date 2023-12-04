@@ -30,6 +30,7 @@ const RegistrationScreen = ({ navigation }) => {
     })
   })
 
+
   const handleRegisterPress = async () => {
     try {
       const userCred = await createUserWithEmailAndPassword(auth, email, password);

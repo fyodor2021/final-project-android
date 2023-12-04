@@ -10,24 +10,28 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {useContext} from 'react'
 import { TextInput } from 'react-native-gesture-handler';
 import Button from './Button'
 import Input from './Input'
 import { auth } from './firebase-auth';
+import UserContext from './context/UserContext';
 import {signInWithEmailAndPassword} from 'firebase/auth'
 
 export default function LoginScreen({ navigation }) {
   const [email,setEmail] = useState('')
   const [password,setPassword] = useState('')
+  const { signedState } = useContext(UserContext)
+  const [signedIn, setSignedIn] = signedState
   const handleLoginPress = async () => {
     try{
       const response = await signInWithEmailAndPassword(auth, email,password);
       console.log(response.user)
+      setSignedIn(!signedIn)
       navigation.navigate('Home')
     }catch(error){
       alert('sign in failed' + error.message)
     }
-
   }
 
   const handleRegister = () => {
@@ -77,6 +81,11 @@ const screen = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
+    height: screen.height,
+    width:screen.width,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
 
   },
   rContainer: {
@@ -90,12 +99,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 39,
     justifyContent:'center',
-    margin: 20
+    marginRight: 20,
+    marginLeft: 20,
+    marginTop: 0,
+    padding: 10
   },
   textContainer: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
+    marginRight:10
   },
   text: {
     color: 'gray',
