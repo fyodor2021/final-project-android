@@ -25,31 +25,13 @@ export default function HomeScreen({ navigation }) {
       headerTitleContainerStyle: {
         marginLeft: 0
       },
-      headerLeft: () => {
-        return <TouchableOpacity style={{ marginLeft: 0 }} onPress={() => navigation.goBack()}>
-          <View style={styles.backButton} >
-            <Image source={require('../images/goBack.png')} style={{ ...styles.backImage, width: 50, height: 50 }} />
-          </View>
-
-        </TouchableOpacity>
-      },
+      headerLeft: null
+      ,
       headerRight: () => {
         return <TouchableOpacity style={{ marginLeft: 0 }} onPress={() => setMenuVisible(!menuVisible)}>
-          {
-            !menuVisible ?
               <View style={{ ...styles.backButton, marginRight: 3 }} >
                 <Image source={require('../images/hamburgerMenu.png')} style={{ ...styles.backImage, width: 20, height: 20, marginRight: 0 }} />
-
-              </View> :
-              <SafeAreaView style={styles.menuContainer}>
-                <Button style={{ ...styles.button, ...styles.menuItems }} text='Edit' onPress={() => navigation.navigate('Edit')}></Button>
-                <Button style={{ ...styles.button, ...styles.menuItems }} text='share'></Button>
-                <Button style={{ ...styles.button, ...styles.menuItems, marginBottom: 25 }} text='Rate'></Button>
-              </SafeAreaView>
-
-          }
-
-
+              </View> 
         </TouchableOpacity>
       },
       headerStyle: {
@@ -66,28 +48,31 @@ export default function HomeScreen({ navigation }) {
   const handleDetailPress = () => {
     navigation.navigate('Detail')
   }
-   //<TouchableWithoutFeedback onPress={() => setMenuVisible(false)}>
-    return <View>
-      <Text>hello world</Text>
-      <Button style={styles.button} text="Take me to Detailssss...." onPress={handleDetailPress}></Button>
-    </View>
-  //</TouchableWithoutFeedback>
-
+return <TouchableWithoutFeedback>{!menuVisible ?
+<View>
+    <Text>hello world</Text>
+    <Button style={styles.button} text="Take me to Detailssss...." onPress={handleDetailPress}></Button>
+  </View>: <SafeAreaView style={styles.menuContainer}>
+    <Button style={{ ...styles.button, ...styles.menuItems }} text='Edit' onPress={() => navigation.navigate('Edit')}></Button>
+    <Button style={{ ...styles.button, ...styles.menuItems }} text='share'></Button>
+    <Button style={{ ...styles.button, ...styles.menuItems, marginBottom: 25 }} text='Rate'></Button>
+  </SafeAreaView>}</TouchableWithoutFeedback>
 }
+
+
 
 const screen = Dimensions.get('window');
 const styles = StyleSheet.create({
   menuContainer: {
     borderWidth: 1,
     backgroundColor: "#850101",
-    marginTop: 50,
     borderRadius: 30,
     opacity: .9,
     shadowColor: 'black',
     shadowWidth: 1,
     shadowOffset: { width: 1, height: 5 },
     shadowOpacity: .5,
-    marginRight: 5
+    width: screen.width
   },
   menuItems: {
     justifyContent: 'center',
@@ -114,14 +99,15 @@ const styles = StyleSheet.create({
   searchContainer: {
     display: 'flex',
     alignItems: 'baseline',
-    width: screen.width / 1.6,
+    width: screen.width,
   },
   searchInput: {
-    width: screen.width / 1.6,
+    width: screen.width / 1.2,
     backgroundColor: 'white',
     height: 40,
     borderRadius: 10,
-    padding: 8
+    padding: 8,
+    marginLeft: 10,
   },
   backButton: {
     width: 40,

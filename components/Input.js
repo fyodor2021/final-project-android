@@ -7,14 +7,15 @@ import {
 import {useState} from 'react'
 
 
-export default function Input({label}) {
-    const [input, setInput] = useState('');
-    const handleChange = (value) => {
-        setInput(value)
+export default function Input({label, state}) {
+    const [input, setInput] = state
+    const handleChange = (event) => {
+      console.log(input)
+        setInput(event)
     }
     return       <View>
     <Text style={styles.labels}>{label}</Text>
-    <TextInput value={input} onChange={handleChange} style={styles.input} />
+    <TextInput value={input} onChangeText={handleChange} style={styles.input} />
   </View>
 }
 const screen = Dimensions.get('window');

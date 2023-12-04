@@ -13,11 +13,21 @@ import {
 import { TextInput } from 'react-native-gesture-handler';
 import Button from './Button'
 import Input from './Input'
+import { auth } from './firebase-auth';
+import {signInWithEmailAndPassword} from 'firebase/auth'
 
 export default function LoginScreen({ navigation }) {
-  const handleLoginPress = () => {
-    console.log('handle press')
-    navigation.navigate('Home')
+  const [email,setEmail] = useState('')
+  const [password,setPassword] = useState('')
+  const handleLoginPress = async () => {
+    try{
+      const response = await signInWithEmailAndPassword(auth, email,password);
+      console.log(response.user)
+      navigation.navigate('Home')
+    }catch(error){
+      alert('sign in failed' + error.message)
+    }
+
   }
 
   const handleRegister = () => {
@@ -41,8 +51,8 @@ export default function LoginScreen({ navigation }) {
       </View>
     </View>
     <View>
-      <Input label='User Name:'/>
-      <Input label='Password:'/>
+      <Input label='User Name:' state={[email,setEmail]}/>
+      <Input label='Password:' state={[password,setPassword]}/>
       <View>
         <Button style={{ ...styles.button, marginTop: 10 }} text="Log in" onPress={handleLoginPress}></Button>
       </View>
