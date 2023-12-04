@@ -16,9 +16,12 @@ export default function DetailScreen({navigation}){
   const Share = () => {
     navigation.navigate('Share')
   }
+  const Rate = () => {
+    navigation.navigate('Rate')
+  }
     return (
       <SafeAreaView style={styles.container}>
-       <Image style={styles.image} source='https://picsum.photos/200/200'/>
+       <Image style={styles.image} source={require('../images/fries.png')}/>
        <View  style={styles.container2}>
             <Text  style={styles.text} >Name</Text>
             <Text  style={styles.text}> Adress</Text>
@@ -27,6 +30,8 @@ export default function DetailScreen({navigation}){
        </View>
        <View >
             <Button style={styles.button}  text="Direction" onPress={Share}/>
+            <Button style={styles.button}  text="Rate" onPress={Rate}/>
+
             
       </View>
 

@@ -10,33 +10,45 @@ import {
   View,
   TextInput,
 } from 'react-native';
-import {useState} from 'react'
+import { useState } from 'react'
 import Button from './Button'
+import { useLayoutEffect } from 'react'
+import Input from './Input'
+import {createUserWithEmailAndPassword} from 'firebase/auth'
+import {database,auth} from './firebase-auth'
+import {set,ref} from 'firebase/database'
 const RegistrationScreen = ({ navigation }) => {
-  const [email, setEmail] = useState();
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
-  const [address, setAddress] = useState();
-  const [dob, setDob] = useState();
-  const handleRegisterPress = () => {
+  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [address, setAddress] = useState('')
+  const [dateOfBirth, setDateOfBirth] = useState('')
+  useLayoutEffect(() => {
+
+    navigation.setOptions({
+      headerShown: false
+    })
+  })
+
+
+  const handleRegisterPress = async () => {
+    try {
+      const userCred = await createUserWithEmailAndPassword(auth, email, password);
+      await set(ref(database, `users/${userCred.user.uid}`),{
+        email,
+        username,
+        password,
+        address,
+        dateOfBirth
+      })
+      console.log('user registered successfully');
+    } catch (e) {
+      console.log(e);
+    }
+
     navigation.navigate('Login')
   }
-  const handleEmailChange = (value) => {
-    setEmail(value)
-  }  
-  const handleUsernameChange = (value) => {
-    setUsername(value)
-  }  
-  const handlePasswordChange = (value) => {
-    setPassword(value)
-  }  
-  const handleAddressChange = (value) => {
-    setAddress(value)
-  }  
-  const handleDobChange = (value) => {
-    setDob(value)
-  }  
-  
+
   return <SafeAreaView style={styles.container}>
     <View style={styles.logoContainer}>
       <View style={styles.rContainer}>
@@ -55,27 +67,15 @@ const RegistrationScreen = ({ navigation }) => {
       </View>
     </View>
     <View>
-      <View>
-        <Text style={styles.labels}>Email:</Text>
-        <TextInput value={email} onChange={handleEmailChange} style={styles.input} />
+      <Input label="Email:" state={[email, setEmail]} />
+      <Input label="User Name:" state={[username, setUsername]} />
+      <Input label="Password:" state={[password, setPassword]} />
+      <Input label="Address:" state={[address, setAddress]} />
+      <Input label="Date of Birth:" state={[dateOfBirth, setDateOfBirth]} />
+      <View style={{ display: 'flex', flexDirection: 'row' }}>
+        <Button style={{ ...styles.button, marginRight: 0, width: screen.width / 3 }} text='Back' onPress={() => navigation.goBack()}></Button>
+        <Button style={{ ...styles.button, width: screen.width / 3 }} text='Register' onPress={handleRegisterPress}></Button>
       </View>
-      <View>
-        <Text style={styles.labels}>User Name:</Text>
-        <TextInput value={username} onChange={handleUsernameChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Password:</Text>
-        <TextInput value={password} onChange={handlePasswordChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Address:</Text>
-        <TextInput value={address} onChange={handleAddressChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Date of Birth:</Text>
-        <TextInput value={dob} onChange={handleDobChange} style={styles.input} />
-      </View>
-      <Button style={{...styles.button}} text='Register' onPress={handleRegisterPress}></Button>
     </View>
 
   </SafeAreaView>
@@ -124,25 +124,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
 
   },
-  input: {
-    width: screen.width / 1.3,
-    backgroundColor: 'white',
-    borderWidth: 1,
-    marginRight: 40,
-    marginLeft: 40,
-    height: 50,
-    borderRadius: 20,
-    padding: 15
-  },
-  labels: {
-    fontSize: 20,
-    margin: 50,
-    marginBottom: 5,
-    marginTop: 5,
-    color: 'gray',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
+
   button: {
     width: screen.width / 1.3,
     backgroundColor: '#ff5757',
@@ -155,6 +137,18 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     marginTop: 25
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    backgroundColor: '#ff5757',
+    marginLeft: 1,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  backImage: {
+    marginRight: 5
   }
 })
 
