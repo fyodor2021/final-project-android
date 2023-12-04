@@ -14,7 +14,15 @@ import { useState } from 'react'
 import Button from './Button'
 import { useLayoutEffect } from 'react'
 import Input from './Input'
+import {createUserWithEmailAndPassword} from 'firebase/auth'
+import {database,auth} from './firebase-auth'
+import {set,ref} from 'firebase/database'
 const RegistrationScreen = ({ navigation }) => {
+  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [address, setAddress] = useState('')
+  const [dateOfBirth, setDateOfBirth] = useState('')
   useLayoutEffect(() => {
 
     navigation.setOptions({
@@ -22,7 +30,21 @@ const RegistrationScreen = ({ navigation }) => {
     })
   })
 
-  const handleRegisterPress = () => {
+  const handleRegisterPress = async () => {
+    try {
+      const userCred = await createUserWithEmailAndPassword(auth, email, password);
+      await set(ref(database, `users/${userCred.user.uid}`),{
+        email,
+        username,
+        password,
+        address,
+        dateOfBirth
+      })
+      console.log('user registered successfully');
+    } catch (e) {
+      console.log(e);
+    }
+
     navigation.navigate('Login')
   }
 
@@ -44,11 +66,11 @@ const RegistrationScreen = ({ navigation }) => {
       </View>
     </View>
     <View>
-      <Input label="Email:" />
-      <Input label="User Name:" />
-      <Input label="Password:" />
-      <Input label="Address:" />
-      <Input label="Date of Birth:" />
+      <Input label="Email:" state={[email, setEmail]} />
+      <Input label="User Name:" state={[username, setUsername]} />
+      <Input label="Password:" state={[password, setPassword]} />
+      <Input label="Address:" state={[address, setAddress]} />
+      <Input label="Date of Birth:" state={[dateOfBirth, setDateOfBirth]} />
       <View style={{ display: 'flex', flexDirection: 'row' }}>
         <Button style={{ ...styles.button, marginRight: 0, width: screen.width / 3 }} text='Back' onPress={() => navigation.goBack()}></Button>
         <Button style={{ ...styles.button, width: screen.width / 3 }} text='Register' onPress={handleRegisterPress}></Button>

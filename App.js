@@ -29,9 +29,9 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <NavigationContainer>
-        <navStack.Navigator>
-        <navStack.Screen name="Splash" component={SplashScreen} options={{headerShown: false}}/>
-          <navStack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>
+        <navStack.Navigator >
+        <navStack.Screen name="Splash" component={SplashScreen} options={{ backBehavior: 'none', headerLeft: null, headerShown: false, gestureEnabled: false}}/>
+          <navStack.Screen name="Login" component={LoginScreen} options={{headerShown: false, gestureEnabled:false}}/>
           <navStack.Screen name="Home" component={HomeScreen}/>
           <navStack.Screen name="Registration" component={RegistrationScreen}/>
           <navStack.Screen name="Detail" component={DetailScreen}/>
@@ -49,7 +49,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: '#ecf0f1',
-    padding: 8,
+    height: screen.height,
+    width: screen.width
+
   },
   input: {
     width: screen.width / 1.3,
