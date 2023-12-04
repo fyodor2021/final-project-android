@@ -11,8 +11,9 @@ import {
     Dimensions,
     TextInput
   } from 'react-native';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import { KeyboardAvoidingView , Keyboard, TouchableWithoutFeedback} from 'react-native';
+import Model, { addReview, getAllReviews } from './Model';
 
 
 export default function RateScreen({navigation}){
@@ -20,8 +21,16 @@ const handlePressOutside = () => {
     Keyboard.dismiss();
 };
 
+
 const [defaultRating, setDefaultRating] = useState(2)
 const [maxRating, setMaxRating] = useState([1,2,3,4,5])
+const [review, setReview] = useState({
+  user_id: '',
+  restaurant_id: '',
+  review_body: '',
+  star_rate: 2
+})
+const [review_body,setReviewBody] = useState('')
 
 const Rate = () => {
   return (
@@ -29,7 +38,7 @@ const Rate = () => {
       {
         maxRating.map( (item,key) => {
           return (
-            <TouchableOpacity activeOpacity={0.2} key={item} onPress = { () => setDefaultRating(item)}> 
+            <TouchableOpacity activeOpacity={0.2} key={key} onPress = { () => setDefaultRating(item)}> 
               <Image style={styles.star} 
               source={
               item <= defaultRating
@@ -42,23 +51,41 @@ const Rate = () => {
       }
      </View>
   )}
+  useEffect(() => {
+    setReview({
+      user_id: 5,
+      restaurant_id: 5,
+      review_body: review_body,
+      star_rate: defaultRating
+    })
+  }, [review_body, defaultRating]);
+  
+  const handleOnSubmit = () => {  
+    addReview(review)
+  }
+
+
+
   return (
-    <TouchableWithoutFeedback onPress={handlePressOutside}>
+    <TouchableWithoutFeedback  onPress={handlePressOutside}>
     <KeyboardAvoidingView behavior='height' style={styles.container}>
     <SafeAreaView style={styles.container}>
      <Image style={styles.image} source={require('../images/fries.png')}/>
+    
+
      <View  style={styles.container2}>
           <Text  style={styles.text} >Tell us how we did?</Text>
-          <TextInput multiline={true}  style={styles.textInput} onChangeText={ (textValue) => {} }/>
+          <TextInput multiline={true}  style={styles.textInput} onChangeText={(review_body)=> setReviewBody(review_body)}/>
      </View>
      <View  style={styles.container2}>
           <Text  style={styles.text} >Rating:</Text>
-          <Rate/>
+          <Rate setDefaultRating={setDefaultRating}/>
           
      </View>
      <View >
-          <Button style={styles.button}  text="Rate" />
+          <Button title='submit' onPress={handleOnSubmit} style={styles.button}  text="Rate" />
     </View>
+  
     </SafeAreaView>
     </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
@@ -109,15 +136,14 @@ const styles = StyleSheet.create({
   star :{
     width: 30,
     height: 30
-
-},
-icon :{
-  width: 50,
-  height: 50
-},
+  },
 image:{
   height: '55%',
   width: imageWidth,
   padding: 5
+},
+  icon :{
+  width: 50,
+  height: 50
 }
-
+});
