@@ -109,13 +109,15 @@ const styles = StyleSheet.create({
   star :{
     width: 30,
     height: 30
-  },
 
-  image:{
-    height: '65%',
-    width: imageWidth,
-  },
-  text: {
-    marginVertical: 5
-  }
-});
+},
+icon :{
+  width: 50,
+  height: 50
+},
+image:{
+  height: '55%',
+  width: imageWidth,
+  padding: 5
+}
+
