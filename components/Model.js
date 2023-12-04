@@ -5,10 +5,7 @@ import React, { useEffect } from 'react';
     export default  db = SQLite.openDatabase('restaurant.db');
 
     export const initializeDatabase = () => {
-        db.transaction(tx => tx.executeSql(
-            'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, username TEXT, password TEXT, address TEXT, birth_date TEXT)'
-          )
-        );
+    
       db.transaction(tx => tx.executeSql(
           'CREATE TABLE IF NOT EXISTS restaurants (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, address TEXT, phone_number TEXT, description TEXT, tags TEXT, image_data TEXT )'
         ) , null, (txObj,results) => console.log(results),
@@ -31,36 +28,7 @@ import React, { useEffect } from 'react';
 
     
 
-    export const addUser = (input) => {
-        const { email, username, password, address, birth_date } = input;
-
-        db.transaction(tx => {
-            tx.executeSql(`INSERT INTO users (email, username, password, address, birth_date) VALUES (?,?,?,?,?)`, 
-            [ email, username, password, address, birth_date ], 
-            (txObj, results) => console.log(`${username} is added to users`),
-               (txObj,error) => console.log(error) )
-        })
-    }
-    export const getAllUsers = () => {
-        db.transaction(tx =>{
-            tx.executeSql('SELECT * FROM users', null,
-         //   (txObj,results) =>{ return results.rows._array})
-            (txObj,results) =>console.log(results.rows._array) )
-
-        })
-    }
-
-    export const isMember = (input, callback) => {
-        const {username, password} = input;
-
-        db.transaction(tx => {
-            tx.executeSql(`SELECT * FROM users WHERE username=? AND password=?`, 
-            [username, password], 
-            (txObj, results) => {if (results.rows.length > 0) {callback(true)} else {callback(false)}},
-               (txObj,error) => console.log(error) )
-        })
-    }
-
+    
     export const getAllRestaurants = () => {
         db.transaction(tx =>{
             tx.executeSql('SELECT * FROM restaurants', null,
