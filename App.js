@@ -24,10 +24,14 @@ import EditScreen from './components/EditScreen';
 import RateScreen from './components/RateScreen';
 import ShareScreen from './components/ShareScreen';
 import { Provider } from './components/context/UserContext'
-
+import {initializeDatabase} from './components/Model'
 const navStack = createStackNavigator();
 
 export default function App() {
+  useEffect(() => {
+    initializeDatabase();
+  },[])
+
   return (
     <Provider>
       <SafeAreaView style={styles.container}>

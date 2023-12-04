@@ -10,7 +10,6 @@ import {useState} from 'react'
 export default function Input({label, state}) {
     const [input, setInput] = state
     const handleChange = (event) => {
-      console.log(input)
         setInput(event)
     }
     return       <View>

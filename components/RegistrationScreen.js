@@ -83,8 +83,10 @@ const RegistrationScreen = ({ navigation }) => {
 const screen = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
+    justifyContent:'center',
     width: screen.width,
-    height: screen.height
+    height: screen.height,
+    
   },
   rContainer: {
     display: 'flex',

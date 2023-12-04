@@ -55,21 +55,20 @@ export default function HomeScreen({ navigation }) {
       },
 
     })
-  }, [])
+  },[menuVisible])
   const handleDetailPress = () => {
     navigation.navigate('Detail')
   }
-  return signedIn ? <SafeAreaView style={{ width: '14444' }}><TouchableWithoutFeedback>{!menuVisible ?
+  return <SafeAreaView style={{ width: '14444' }}><TouchableWithoutFeedback>{!menuVisible ?
     <View>
-      <Text>hello world</Text>
-      <Button style={styles.button} text="Take me to Detailssss...." onPress={handleDetailPress}></Button>
+      <Button style={styles.detailsButton} text="Take me to Detailssss...." onPress={handleDetailPress}></Button>
     </View > : <SafeAreaView style={styles.menuContainer}>
       <Button style={{ ...styles.button, ...styles.menuItems }} text='Edit' onPress={() => navigation.navigate('Edit')}></Button>
       <Button style={{ ...styles.button, ...styles.menuItems }} text='share'></Button>
       <Button style={{ ...styles.button, ...styles.menuItems }} text='Rate'></Button>
       <Button style={{ ...styles.button, ...styles.menuItems, marginBottom: 25 }} onPress={handleLogoutPress} text='Logout'></Button>
 
-    </SafeAreaView>}</TouchableWithoutFeedback></SafeAreaView> : <LoginScreen/>
+    </SafeAreaView>}</TouchableWithoutFeedback></SafeAreaView>
 }
 
 
@@ -98,7 +97,11 @@ const styles = StyleSheet.create({
     width: screen.width / 2,
 
   },
-
+  detailsButton:{
+    width: screen.width,
+    height: 50,
+    backgroundColor: '#ff5757',
+  },
   button: {
     justifyContent: 'center',
     width: 90,

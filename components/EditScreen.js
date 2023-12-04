@@ -56,7 +56,9 @@ export default function EditScreen({navigation}){
   const handleEditPress = () => {
 
   }
+
     return  <SafeAreaView style={styles.container}>
+    
     <ImageBackground source={require('../images/restaurant.jpg')} style={styles.backgroundImage}>
         <Button style={styles.uploadButton} text='Upload'></Button>
     </ImageBackground>

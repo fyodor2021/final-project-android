@@ -15,6 +15,24 @@ import email from 'react-native-email';
 
 
 export default function ShareScreen({navigation}){
+  navigation.setOptions({
+    title:'',
+    headerStyle: {
+      backgroundColor: '#ff5757', 
+    },
+    headerTintColor: 'white',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+    headerLeft: () => {
+      return <TouchableOpacity style={{ marginLeft: 0 }} onPress={() => navigation.goBack()}>
+            <View style={styles.backButton} >
+              <Image source={require('../images/goBack.png')} style={{ ...styles.backImage, width: 50, height: 50 }} />
+            </View>
+  
+          </TouchableOpacity>
+    }
+  })
   const shareViaEmail = () => {
     const to = [''];
     email(to, {

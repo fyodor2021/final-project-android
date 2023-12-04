@@ -25,8 +25,7 @@ export default function LoginScreen({ navigation }) {
   const [signedIn, setSignedIn] = signedState
   const handleLoginPress = async () => {
     try{
-      const response = await signInWithEmailAndPassword(auth, email,password);
-      console.log(response.user)
+      await signInWithEmailAndPassword(auth, email,password);
       setSignedIn(!signedIn)
       navigation.navigate('Home')
     }catch(error){

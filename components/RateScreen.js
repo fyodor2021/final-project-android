@@ -1,56 +1,74 @@
 import Button from './Button'
 import {
-    Text,
-    SafeAreaView,
-    StyleSheet,
-    FlatList,
-    ActivityIndicator,
-    Image,
-    TouchableOpacity,
-    View,
-    Dimensions,
-    TextInput
-  } from 'react-native';
-import {useEffect, useState} from 'react';
-import { KeyboardAvoidingView , Keyboard, TouchableWithoutFeedback} from 'react-native';
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  FlatList,
+  ActivityIndicator,
+  Image,
+  TouchableOpacity,
+  View,
+  Dimensions,
+  TextInput
+} from 'react-native';
+import { useEffect, useState } from 'react';
+import { KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import Model, { addReview, getAllReviews } from './Model';
 
 
-export default function RateScreen({navigation}){
-const handlePressOutside = () => {
+export default function RateScreen({ navigation }) {
+  const handlePressOutside = () => {
     Keyboard.dismiss();
-};
+  };
+  navigation.setOptions({
+    title: '',
+    headerStyle: {
+      backgroundColor: '#ff5757',
+    },
+    headerTintColor: 'white',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+    headerLeft: () => {
+      return <TouchableOpacity style={{ marginLeft: 0 }} onPress={() => navigation.goBack()}>
+        <View style={styles.backButton} >
+          <Image source={require('../images/goBack.png')} style={{ ...styles.backImage, width: 50, height: 50 }} />
+        </View>
 
+      </TouchableOpacity>
+    }
+  })
 
-const [defaultRating, setDefaultRating] = useState(2)
-const [maxRating, setMaxRating] = useState([1,2,3,4,5])
-const [review, setReview] = useState({
-  user_id: '',
-  restaurant_id: '',
-  review_body: '',
-  star_rate: 2
-})
-const [review_body,setReviewBody] = useState('')
+  const [defaultRating, setDefaultRating] = useState(2)
+  const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5])
+  const [review, setReview] = useState({
+    user_id: '',
+    restaurant_id: '',
+    review_body: '',
+    star_rate: 2
+  })
+  const [review_body, setReviewBody] = useState('')
 
-const Rate = () => {
-  return (
+  const Rate = () => {
+    return (
       <View style={styles.starRow}>
-      {
-        maxRating.map( (item,key) => {
-          return (
-            <TouchableOpacity activeOpacity={0.2} key={key} onPress = { () => setDefaultRating(item)}> 
-              <Image style={styles.star} 
-              source={
-              item <= defaultRating
-                ? require('../images/fullStar.png') 
-                : require('../images/emptyStar.png') }
-              />
-            </TouchableOpacity>
-          )
-        })
-      }
-     </View>
-  )}
+        {
+          maxRating.map((item, key) => {
+            return (
+              <TouchableOpacity activeOpacity={0.2} key={key} onPress={() => setDefaultRating(item)}>
+                <Image style={styles.star}
+                  source={
+                    item <= defaultRating
+                      ? require('../images/fullStar.png')
+                      : require('../images/emptyStar.png')}
+                />
+              </TouchableOpacity>
+            )
+          })
+        }
+      </View>
+    )
+  }
   useEffect(() => {
     setReview({
       user_id: 5,
@@ -59,41 +77,42 @@ const Rate = () => {
       star_rate: defaultRating
     })
   }, [review_body, defaultRating]);
-  
-  const handleOnSubmit = () => {  
+
+  const handleOnSubmit = () => {
     addReview(review)
   }
 
 
 
   return (
-    <TouchableWithoutFeedback  onPress={handlePressOutside}>
-    <KeyboardAvoidingView behavior='height' style={styles.container}>
-    <SafeAreaView style={styles.container}>
-     <Image style={styles.image} source={require('../images/fries.png')}/>
-    
+    <TouchableWithoutFeedback onPress={handlePressOutside}>
+      <KeyboardAvoidingView behavior='height' style={styles.container}>
+        <SafeAreaView style={styles.container}>
+          <Image style={styles.image} source={require('../images/fries.png')} />
 
-     <View  style={styles.container2}>
-          <Text  style={styles.text} >Tell us how we did?</Text>
-          <TextInput multiline={true}  style={styles.textInput} onChangeText={(review_body)=> setReviewBody(review_body)}/>
-     </View>
-     <View  style={styles.container2}>
-          <Text  style={styles.text} >Rating:</Text>
-          <Rate setDefaultRating={setDefaultRating}/>
-          
-     </View>
-     <View >
-          <Button title='submit' onPress={handleOnSubmit} style={styles.button}  text="Rate" />
-    </View>
-  
-    </SafeAreaView>
-    </KeyboardAvoidingView>
+
+          <View style={styles.container2}>
+            <Text style={styles.text} >Tell us how we did?</Text>
+            <TextInput multiline={true} style={styles.textInput} onChangeText={(review_body) => setReviewBody(review_body)} />
+          </View>
+          <View style={styles.container2}>
+            <Text style={styles.text} >Rating:</Text>
+            <Rate setDefaultRating={setDefaultRating} />
+
+          </View>
+          <View >
+            <Button title='submit' onPress={handleOnSubmit} style={styles.button} text="Rate" />
+          </View>
+
+        </SafeAreaView>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
-    )}
-    
+  )
+}
+
 
 const screen = Dimensions.get("window");
-const imageWidth = screen.width ;
+const imageWidth = screen.width;
 
 
 const styles = StyleSheet.create({
@@ -101,12 +120,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ecf0f1',
     justifyContent: 'centre'
-  },  
-  container2:{
-    marginVertical : 5,
+  },
+  container2: {
+    marginVertical: 5,
     marginHorizontal: 5,
   },
-    button: {
+  button: {
     marginBottom: 60,
     width: screen.width / 1.3,
     backgroundColor: '#ff5757',
@@ -121,7 +140,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   textInput: {
-   backgroundColor: 'white',
+    backgroundColor: 'white',
     height: 100,
     borderRadius: 15,
     borderWidth: 1,
@@ -133,17 +152,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 5
   },
-  star :{
+  star: {
     width: 30,
     height: 30
   },
-image:{
-  height: '55%',
-  width: imageWidth,
-  padding: 5
-},
-  icon :{
-  width: 50,
-  height: 50
-}
+  image: {
+    height: '55%',
+    width: imageWidth,
+    padding: 5
+  },
+  icon: {
+    width: 50,
+    height: 50
+  }
 });
