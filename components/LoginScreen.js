@@ -3,36 +3,45 @@ import {
   Text,
   SafeAreaView,
   StyleSheet,
-  FlatList,
-  ActivityIndicator,
   Image,
   Dimensions,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useContext} from 'react'
+import { useContext } from 'react'
 import { TextInput } from 'react-native-gesture-handler';
 import Button from './Button'
 import Input from './Input'
-import { auth } from './firebase-auth';
 import UserContext from './context/UserContext';
-import {signInWithEmailAndPassword} from 'firebase/auth'
-
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { database, auth } from './firebase-auth'
+import { ref, onValue, DataSnapshot } from 'firebase/database'
 export default function LoginScreen({ navigation }) {
-  const [email,setEmail] = useState('')
-  const [password,setPassword] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const { signedState } = useContext(UserContext)
   const [signedIn, setSignedIn] = signedState
   const handleLoginPress = async () => {
-    try{
-      await signInWithEmailAndPassword(auth, email,password);
-      setSignedIn(!signedIn)
+    try {
+      const userCred = await signInWithEmailAndPassword(auth, email, password)
+      const usersRef = ref(database, `users`)
+      let records = []
+      onValue(usersRef, snapshot => {
+        snapshot.forEach(childSnapshot => {
+          const key = childSnapshot.key
+          const data = childSnapshot.val()
+          records.push({ "key": key, "data": data })
+        })
+      })
+      
+      const user = records.filter(record => record.key == userCred.user.uid)
+      await AsyncStorage.setItem('loggedInUser', JSON.stringify(user[0].data))
       navigation.navigate('Home')
-    }catch(error){
+    } catch (error) {
       alert('sign in failed' + error.message)
     }
   }
-
   const handleRegister = () => {
     navigation.navigate('Registration')
   }
