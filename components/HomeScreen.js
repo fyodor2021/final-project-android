@@ -2,14 +2,11 @@ import {
   Text,
   SafeAreaView,
   StyleSheet,
-  FlatList,
-  ActivityIndicator,
   Image,
   Dimensions,
   TouchableOpacity,
   View,
   TextInput,
-  Animated
 } from 'react-native';
 import { useState, useLayoutEffect, useContext, useEffect } from 'react';
 import Button from './Button'
@@ -17,24 +14,29 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { signOut } from 'firebase/auth';
 import { auth } from './firebase-auth';
 import UserContext from './context/UserContext';
-import LoginScreen from './LoginScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 function HomeScreen({ navigation }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const { signedState } = useContext(UserContext)
   const [signedIn, setSignedIn] = signedState
+  const [search, setSearch] = useState()
   const [user, setUser] = useState()
-  const handleLogoutPress = () => {
-    signOut(auth).then()
-      .catch(error => console.log(error))
-    setSignedIn(!signedIn)
+
+  const handleLogoutPress = async () => {
+    signOut(auth).catch(error => console.log(error))
+    AsyncStorage.setItem('loggedInUser', '').catch(error => console.log(error))
+    setSignedIn(false)
   }
+  const handleSeachSubmit = () => {
+
+  }
+  console.log(signedIn)
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: () => {
-        return <View style={styles.searchContainer}>
-          <TextInput style={styles.searchInput} placeholder='Search' />
-        </View>
+        return <TouchableOpacity style={styles.searchContainer} onPress={handleSeachSubmit}>
+          <TextInput style={styles.searchInput} placeholder='Search'  onSubmitEditing={handleSeachSubmit}/>
+            </TouchableOpacity>
       },
       headerTitleContainerStyle: {
         marginLeft: 0
@@ -42,7 +44,7 @@ function HomeScreen({ navigation }) {
       headerLeft: null
       ,
       headerRight: () => {
-        return <TouchableOpacity style={{ marginLeft: 0 }} onPress={handleMenuToggle}>
+        return <TouchableOpacity style={{ marginLeft: 0 }} onPress={handleMenuToggle} >
           <View style={{ ...styles.backButton, marginRight: 3 }} >
             <Image source={require('../images/hamburgerMenu.png')} style={{ ...styles.backImage, width: 20, height: 20, marginRight: 0 }} />
           </View>
@@ -71,12 +73,9 @@ function HomeScreen({ navigation }) {
   }
   return (
     <SafeAreaView style={{ flex: 1 }}>
-    <TouchableWithoutFeedback onPress={() => setMenuVisible(!menuVisible)}>
       <View>
         <Button style={styles.detailsButton} text="Take me to Detailssss...." onPress={handleDetailPress}></Button>
-      </View> 
-    </TouchableWithoutFeedback>
-
+      </View>
       {menuVisible && (
         <View style={styles.menuWrapper}>
           <View style={styles.menuContainer}>
@@ -88,9 +87,9 @@ function HomeScreen({ navigation }) {
                 <Text style={styles.menuTextHeader}>{user.email}</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={{ ...styles.menuItem }}>
+            <TouchableOpacity style={{ ...styles.menuItem }} onPress={() => navigation.navigate("")}>
               <View style={styles.imageContainer}>
-                <Image style={{ height: 40, width: 30, color: 'black' }} source={require('../assets/restaurant-icon.png')}></Image>
+                <Image style={{ height: 40, width: 30 }} source={require('../assets/restaurant-icon.png')}></Image>
               </View>
               <View >
                 <Text style={styles.menuText}>Add a Restaurant</Text>
@@ -112,7 +111,7 @@ function HomeScreen({ navigation }) {
                 <Text style={styles.menuText}>About</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={{ ...styles.menuItem }}>
+            <TouchableOpacity style={{ ...styles.menuItem }} onPress={handleLogoutPress}>
               <View style={styles.imageContainer}>
                 <Image style={{ height: 30, width: 30 }} source={require('../assets/sign-out.png')}></Image>
               </View>
@@ -128,7 +127,7 @@ function HomeScreen({ navigation }) {
 };
 const screen = Dimensions.get('window');
 const styles = StyleSheet.create({
-  menuItemHeader:{
+  menuItemHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 10,
@@ -141,10 +140,10 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background to overlay on main content
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   menuContainer: {
-    width: '50%', 
+    width: '50%',
     backgroundColor: '#fc5d5d',
     padding: 10,
     position: 'absolute',
@@ -160,7 +159,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
-    searchContainer: {
+  searchContainer: {
     display: 'flex',
     alignItems: 'baseline',
     width: screen.width,
@@ -192,7 +191,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightblue',
     padding: 10,
   },
-    detailsButton: {
+  detailsButton: {
     width: screen.width,
     height: 50,
     backgroundColor: '#ff5757',

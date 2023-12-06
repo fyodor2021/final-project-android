@@ -16,7 +16,7 @@ import UserContext from './context/UserContext';
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { database, auth } from './firebase-auth'
-import { ref, onValue, DataSnapshot } from 'firebase/database'
+import { ref, once,get } from 'firebase/database'
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -24,20 +24,27 @@ export default function LoginScreen({ navigation }) {
   const [signedIn, setSignedIn] = signedState
   const handleLoginPress = async () => {
     try {
-      const userCred = await signInWithEmailAndPassword(auth, email, password)
-      const usersRef = ref(database, `users`)
-      let records = []
-      onValue(usersRef, snapshot => {
-        snapshot.forEach(childSnapshot => {
-          const key = childSnapshot.key
-          const data = childSnapshot.val()
-          records.push({ "key": key, "data": data })
+        const userCred = await signInWithEmailAndPassword(auth, email, password)
+        let records = []
+        const usersRef = ref(database, `users`)
+        await get(usersRef).then(snapshot => {
+          snapshot.forEach(childSnapshot => {
+            const key = childSnapshot.key
+            const data = childSnapshot.val()
+            records.push({ "key": key, "data": data })
+          })
         })
-      })
-      
+        console.log(records)
+      try{
       const user = records.filter(record => record.key == userCred.user.uid)
+      console.log(records)
+      console.log(user)
       await AsyncStorage.setItem('loggedInUser', JSON.stringify(user[0].data))
+      setSignedIn(true)
       navigation.navigate('Home')
+    }catch(error){
+      console.log(error)
+    }
     } catch (error) {
       alert('sign in failed' + error.message)
     }
