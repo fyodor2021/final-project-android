@@ -1,6 +1,6 @@
 import { createContext, useState } from "react"
 
-const UserContext = createContext()
+const UserContext = createContext(undefined)
 
 function Provider({children}) {
     const [signedIn, setSignedIn] = useState(false)
