@@ -27,8 +27,9 @@ import { initializeDatabase } from './components/Model'
 const navStack = createStackNavigator();
 
 export default function App() {
-
-
+  useEffect(() => {
+    initializeDatabase()
+  },[])
   return (
     <Provider>
       <SafeAreaView style={styles.container}>
@@ -41,38 +42,40 @@ export default function App() {
 export const Layout = () => {
   const {signedState} = useContext(UserContext)
   const [signedIn, setSignedIn] = signedState
-  return (<NavigationContainer>
-    <navStack.Navigator>
-      {signedIn ?(
-        <> 
-        <navStack.Screen name="Splash" 
-        component={SplashScreen} 
-        options={{ backBehavior: 'none', 
-        headerLeft: null, 
-        headerShown: false, 
-        gestureEnabled: false }} />
-          <navStack.Screen 
-          name="Home" 
-          component={HomeScreen} />
-          <navStack.Screen name="Detail" 
-          component={DetailScreen} />
-          <navStack.Screen name="Edit" 
-          component={EditScreen} />
-          <navStack.Screen name="Rate" 
-          component={RateScreen} />
-          <navStack.Screen name="Share" 
-          component={ShareScreen} /> 
+  return (
+    <NavigationContainer>
+      <navStack.Navigator>
+        {signedIn ? (
+          <>
+            <navStack.Screen
+              name="Splash"
+              component={SplashScreen}
+              options={{
+                backBehavior: 'none',
+                headerLeft: null,
+                headerShown: false,
+                gestureEnabled: false
+              }}
+            />
+            <navStack.Screen name="Home" component={HomeScreen} />
+            <navStack.Screen name="Detail" component={DetailScreen} />
+            <navStack.Screen name="Edit" component={EditScreen} />
+            <navStack.Screen name="Rate" component={RateScreen} />
+            <navStack.Screen name="Share" component={ShareScreen} />
           </>
-          ):(
-            <> 
-            <navStack.Screen name="Login" component={LoginScreen} options={{ headerShown: false, gestureEnabled: false }} />
-           <navStack.Screen  name="Registration" component={RegistrationScreen} />
-           </>
-      )}
-
-
-    </navStack.Navigator>
-  </NavigationContainer>)
+        ) : (
+          <>
+            <navStack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ headerShown: false, gestureEnabled: false }}
+            />
+            <navStack.Screen name="Registration" component={RegistrationScreen} />
+          </>
+        )}
+      </navStack.Navigator>
+    </NavigationContainer>
+  );
   // return (
   //   <NavigationContainer>
   //     <navStack.Navigator>

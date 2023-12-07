@@ -62,17 +62,20 @@ import React, { useEffect } from 'react';
     }
 
     export const getAllRestaurants = () => {
-        db.transaction(tx =>{
-            tx.executeSql('SELECT * FROM restaurants', null,
-            // (txObj,results) =>{ return results.rows._array})
-            (txObj,results) =>console.log(results.rows._array) )
+        return new Promise ( (res, rej) => {
+            db.transaction(tx => {
+                tx.executeSql('SELECT * FROM restaurants', null,
+                (txObj, results) => {console.log(results.rows._array) 
+                    res(results.rows._array)},
+                (txObj,error) => {rej(error)})
+            });
 
-        })
+        } );
     }
 
     export const addRestaurant = (input) => {
         const { name, address, phone_number, description, tags, image_data } = input;
-
+        
         db.transaction(tx => {
             tx.executeSql(`INSERT INTO restaurants (name, address, phone_number, description, tags,image_data) VALUES (?,?,?,?,?,?)`, 
             [name, address, phone_number, description, tags, image_data ], 
