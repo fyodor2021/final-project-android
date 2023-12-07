@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   TextInput,
+  FlatList,
 } from 'react-native';
 import { useState, useLayoutEffect, useContext, useEffect } from 'react';
 import Button from './Button'
@@ -15,66 +16,97 @@ import { signOut } from 'firebase/auth';
 import { auth } from './firebase-auth';
 import UserContext from './context/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getAllRestaurants, deleteRestaurant} from './Model'
+import RestaurantListItem from './RestaurantListItem';
 function HomeScreen({ navigation }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const { signedState } = useContext(UserContext)
   const [signedIn, setSignedIn] = signedState
   const [search, setSearch] = useState()
   const [user, setUser] = useState()
-
+  const [restaurants, setRestaurants] = useState({})
   const handleLogoutPress = async () => {
     signOut(auth).catch(error => console.log(error))
     AsyncStorage.setItem('loggedInUser', '').catch(error => console.log(error))
     setSignedIn(false)
   }
+
+
+
+
   const handleSeachSubmit = () => {
 
   }
-  console.log(signedIn)
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTitle: () => {
-        return <TouchableOpacity style={styles.searchContainer} onPress={handleSeachSubmit}>
-          <TextInput style={styles.searchInput} placeholder='Search'  onSubmitEditing={handleSeachSubmit}/>
-            </TouchableOpacity>
-      },
-      headerTitleContainerStyle: {
-        marginLeft: 0
-      },
-      headerLeft: null
-      ,
-      headerRight: () => {
-        return <TouchableOpacity style={{ marginLeft: 0 }} onPress={handleMenuToggle} >
-          <View style={{ ...styles.backButton, marginRight: 3 }} >
-            <Image source={require('../images/hamburgerMenu.png')} style={{ ...styles.backImage, width: 20, height: 20, marginRight: 0 }} />
-          </View>
-        </TouchableOpacity>
-      },
-      headerStyle: {
-        backgroundColor: '#ff5757',
 
-      },
-      headerTintColor: 'white',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
 
-    })
-  }, [menuVisible])
+
+
   const handleDetailPress = () => {
     navigation.navigate('Detail')
   }
+
+
+
+
+  useEffect(() => {
+    getAllRestaurants().then((restaurants) => {
+      setRestaurants(restaurants)
+    }).catch((error) => console.error(error))
+  },[])
+
+
+
+
+  navigation.setOptions({
+    headerTitle: () => {
+      return <TouchableOpacity style={styles.searchContainer} onPress={handleSeachSubmit}>
+        <TextInput style={styles.searchInput} placeholder='Search'  onSubmitEditing={handleSeachSubmit}/>
+          </TouchableOpacity>
+    },
+    headerTitleContainerStyle: {
+      marginLeft: 0
+    },
+    headerLeft: null
+    ,
+    headerRight: () => {
+      return <TouchableOpacity style={{ marginLeft: 0 }} onPress={handleMenuToggle} >
+        <View style={{ ...styles.backButton, marginRight: 3 }} >
+          <Image source={require('../images/hamburgerMenu.png')} style={{ ...styles.backImage, width: 20, height: 20, marginRight: 0 }} />
+        </View>
+      </TouchableOpacity>
+    },
+    headerStyle: {
+      backgroundColor: '#ff5757',
+    },
+    headerTintColor: 'white',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  })
+const handleAddRestaurantPress = () => {
+  navigation.navigate("Edit", {restaurant: null})
+}
+
+
+
   const handleMenuToggle = async () => {
     const loggedInUser = await AsyncStorage.getItem('loggedInUser')
     const user = JSON.parse(loggedInUser)
     setUser(user)
     setMenuVisible(!menuVisible)
-
   }
+
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View>
         <Button style={styles.detailsButton} text="Take me to Detailssss...." onPress={handleDetailPress}></Button>
+      </View>
+      <View>
+        <FlatList data={restaurants} renderItem={({item}) => {
+          console.log("this is the ite from the list view"+item)
+          return <RestaurantListItem navigation={navigation} item={item}/>
+        }}  keyExtractor={(item) => item.id}/>
       </View>
       {menuVisible && (
         <View style={styles.menuWrapper}>
@@ -87,7 +119,7 @@ function HomeScreen({ navigation }) {
                 <Text style={styles.menuTextHeader}>{user.email}</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={{ ...styles.menuItem }} onPress={() => navigation.navigate("")}>
+            <TouchableOpacity style={{ ...styles.menuItem }} onPress={handleAddRestaurantPress}>
               <View style={styles.imageContainer}>
                 <Image style={{ height: 40, width: 30 }} source={require('../assets/restaurant-icon.png')}></Image>
               </View>

@@ -13,7 +13,6 @@ import {
 import { useState } from 'react'
 import Button from './Button'
 import { useLayoutEffect } from 'react'
-import Input from './Input'
 import {createUserWithEmailAndPassword} from 'firebase/auth'
 import {database,auth} from './firebase-auth'
 import {set,ref} from 'firebase/database'
@@ -29,6 +28,22 @@ const RegistrationScreen = ({ navigation }) => {
       headerShown: false
     })
   })
+  const handleEmailChange = (event) => {
+    setEmail(event)
+  }
+  const handleUserChange = (event) => {
+    setUsername(event)
+  }
+
+  const handlePasswordChange = (event) => {
+    setPassword(event)
+  }
+  const handleAddressChange = (event) => {
+    setAddress(event)
+  }
+  const handleDateChange = (event) => {
+    setDateOfBirth(event)
+  }
 
 
   const handleRegisterPress = async () => {
@@ -67,11 +82,27 @@ const RegistrationScreen = ({ navigation }) => {
       </View>
     </View>
     <View>
-      <Input label="Email:" state={[email, setEmail]} />
-      <Input label="User Name:" state={[username, setUsername]} />
-      <Input label="Password:" state={[password, setPassword]} />
-      <Input label="Address:" state={[address, setAddress]} />
-      <Input label="Date of Birth:" state={[dateOfBirth, setDateOfBirth]} />
+    <View>
+        <Text style={styles.labels}>Email:</Text>
+        <TextInput value={email} autoCapitalize='none' onChangeText={handleEmailChange} style={styles.input} />
+      </View>
+      <View>
+        <Text style={styles.labels}>User Name: </Text>
+        <TextInput value={username} autoCapitalize='none' onChangeText={handleUserChange} style={styles.input} />
+      </View>
+      <View>
+        <Text style={styles.labels}>Password:</Text>
+        <TextInput value={password} autoCapitalize='none' onChangeText={handlePasswordChange} style={styles.input} />
+      </View>
+      <View>
+        <Text style={styles.labels}>Address: </Text>
+        <TextInput value={address} autoCapitalize='none' onChangeText={handleAddressChange} style={styles.input} />
+      </View>
+      <View>
+        <Text style={styles.labels}>Date of Birth:</Text>
+        <TextInput value={dateOfBirth} autoCapitalize='none' onChangeText={handleDateChange} style={styles.input} />
+      </View>
+
       <View style={{ display: 'flex', flexDirection: 'row' }}>
         <Button style={{ ...styles.button, marginRight: 0, width: screen.width / 3 }} text='Back' onPress={() => navigation.goBack()}></Button>
         <Button style={{ ...styles.button, width: screen.width / 3 }} text='Register' onPress={handleRegisterPress}></Button>
