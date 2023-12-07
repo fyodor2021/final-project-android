@@ -1,5 +1,5 @@
-// import { Button } from 'react-native';
 import Button from './Button';
+import Model, { deleteReview, getAllReviews } from './Model'
 import {
   Text,
   SafeAreaView,
@@ -8,12 +8,20 @@ import {
   ActivityIndicator,
   Image,
   TouchableOpacity,
-  View, Dimensions
+  View, Dimensions,
+  ScrollView, Linking
 } from 'react-native';
+import React,{ useEffect, useState } from 'react'
+import { useIsFocused } from '@react-navigation/native';
 import { useState } from 'react'
+
 
 export default function DetailScreen({ navigation, route}) {
   const [menuVisible, setMenuVisible] = useState(false)
+    const [menuVisible, setMenuVisible] = useState(false)
+  const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5])
+  const [reviews, setReviews] = useState([])
+  const isFocused = useIsFocused();
   navigation.setOptions({
     title: '',
     headerStyle: {
@@ -46,8 +54,40 @@ export default function DetailScreen({ navigation, route}) {
   const Rate = () => {
     navigation.navigate('Rate')
   }
-  return <View style={styles.wrapper}>
+  const fetchReviews = () => {
+    getAllReviews().then((reviews) => setReviews(reviews))
+                    .catch((error) => console.error(error))
 
+  }
+
+  
+  useEffect(() => {
+    if (isFocused){
+      fetchReviews()
+    }
+  }, [isFocused]);
+
+  const handleDelete = (id) => {
+    deleteReview(id)
+    fetchReviews()
+  }
+  const handleEdit = (review)=>{
+    navigation.navigate('Rate', {mode:'update', review:review})
+
+  }
+
+
+
+  const handleDirection = () => {
+    const label= '1909 lawernce ave e';
+    const mapsURL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(label)}`;
+
+      Linking.openURL(mapsURL).catch(err => console.error('An error occurred', err));
+       
+  }
+
+  
+return <View style={styles.wrapper}>
     <View>
       <View style={styles.container}>
       <View style={{marginRight:4}}>
@@ -95,8 +135,56 @@ export default function DetailScreen({ navigation, route}) {
   </View>
 
 }
+        {reviews.map((item, key) => {
+            return (
+                <View  key={key}>
+                  <View style={styles.containerRow}>
+                    <View style={styles.textContainer}>
+                         <Text style={{marginRight: 5}}>  {item.review_body}</Text>
+                    </View>
+                  
+                    <View style={styles.iconsContainer}>
+                      {maxRating.map((star, key) => {
+                      return (
+                        <View style={styles.starBar} key={key} >
+                        <View >
+                          <Image style={styles.star}
+                            source={
+                              star <= item.star_rate
+                                ? require('../images/fullStar.png')
+                                : require('../images/emptyStar.png')}
+                          />
+                          </View>
+                        </View>
+                      )})}
+                      <View style={styles.iconBar}>
+                            <TouchableOpacity onPress={()=> {handleEdit(item)}} >
+                            <Image style={styles.icon} source={ require('../images/edit.png')}/>
+                            </TouchableOpacity>
+                           <TouchableOpacity onPress={()=> {handleDelete(item.id)}}  >
+                              <Image style={styles.icon}  source={ require('../images/delete.png')}/>
+                            </TouchableOpacity>
+                      </View>
+                    </View>
+
+                    </View>
+                  
+                </View>
+            )})}
+    
+      </View>
+      <Button style={{ ...styles.button, marginBottom: 20 }} text="Direction" onPress={handleDirection}></Button>
+
+    </View>
+    </View>
+  </ScrollView>
+
+
+}
 
 const screen = Dimensions.get("window");
+const imageWidth = screen.width;
+const imageHeight = screen.height / 2;
 const styles = StyleSheet.create({
   wrapper:{
     height: screen.height
@@ -134,6 +222,19 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
   },
   container: {
+    backgroundColor: '#ecf0f1'
+  },
+  containerRow:{
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'right',
+    borderWidth: 1,
+    width: screen.width,
+    height: 100,
+    justifyContent : 'space-between' ,
+    borderRadius: 15,
+    marginTop: 15,
+    backgroundColor: 'white'
     backgroundColor: '#ecf0f1',
     justifyContent: 'space-between',
   },
@@ -149,20 +250,46 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     height: 50,
     borderRadius: 20,
+    padding: 15,
     padding: 10,
     alignItems: 'center',
-    marginTop: 25,
+    marginTop: 20,
   },
   buttonText: {
     color: 'white',
     fontSize: 18,
   },
   image: {
-    height: screen.height/3,
-    width: screen.width,
+    height: imageHeight, 
+    width: imageWidth, 
+
     padding: 5,
   },
   text: {
     marginVertical: 5,
+  },
+
+  icon: {
+    width: 25,
+    height: 25,
+  },
+  star: {
+    width: 20,
+    height: 20
+  },
+  starBar:{
+  },
+  iconBar:{
+    flexDirection: 'row',
+    marginLeft: 4
+  },
+  iconsContainer: {
+    width: 500,
+    flexDirection: 'row',
+  },
+  textContainer: {
+    width: 247,
+    paddingLeft: 3,
   }
+
 });
