@@ -41,29 +41,33 @@ export default function EditScreen({ navigation, route }) {
     }
   })
   const handleCameraUpload = async () => {
-    try{
+    try {
       await ImagePicker.requestCameraPermissionsAsync();
-      imageResults = await ImagePicker.launchCameraAsync({
+      const imageResults = await ImagePicker.launchCameraAsync({
         cameraType: ImagePicker.CameraType.back,
         allowsEditing: true,
         quality: 1
-      })
-      if(!imageResults.canceled){
-        console.log(imageResults.assets[0].uri)
+      });
+  
+      if (!imageResults.canceled) {
+        console.log(imageResults.assets[0].uri);
         await saveImage(imageResults.assets[0].uri);
       }
-    }catch(error){
-      alert(error)
+    } catch (error) {
+      alert(error);
     }
   }
   const handleImageUpload = async (mode) => {
-    if(mode == 'gallary'){
+    if(mode === 'gallary'){
       await ImagePicker.requestMediaLibraryPermissionsAsync();
+      console.log("this is the mode" + mode)
+
       imageResults = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         quality: 1
       })
+      console.log(" this is the image results" + imageResults)
     }
     if(!imageResults.canceled){
       console.log(imageResults.assets[0].uri)
@@ -96,6 +100,7 @@ export default function EditScreen({ navigation, route }) {
 
     if (!empty) {
       addRestaurant(restaurant);
+      navigation.goBack()
     } else {
       alert('All fields must be filled');
     }
@@ -115,12 +120,15 @@ export default function EditScreen({ navigation, route }) {
   const handleTagChange =(event) => {
     setTags(event)
   }
+  const getImage = () => {
+    handleImageUpload('gallary')
+  }
   return (
     route.params.restaurant ? (<SafeAreaView style={styles.container}>
     <View style={styles.backgroundImageContainer}>
       <ImageBackground source={require('../assets/restaurant-image-placeholder.png')} style={styles.backgroundImage}>
         <Button style={styles.uploadButton} text='Camera' onPress={handleCameraUpload}></Button>
-        <Button style={styles.uploadButton} text='Upload' onPress={()=> handleImageUpload('gallary')}></Button>
+        <Button style={styles.uploadButton} text='Upload' onPress={getImage}></Button>
       </ImageBackground>
       </View>
       <View>
@@ -151,7 +159,7 @@ export default function EditScreen({ navigation, route }) {
       <ImageBackground source={imageUri ? {uri:imageUri} : imagePlaceholder} style={styles.restaurantPlaceholder}>
 
       <Button style={styles.uploadButton} text='Camera' onPress={handleCameraUpload}></Button>
-        <Button style={styles.uploadButton} text='Upload' onPress={() => handleImageUpload('gallary')}></Button>
+        <Button style={styles.uploadButton} text='Upload' onPress={getImage}></Button>
       </ImageBackground>
       </View>
       <View>

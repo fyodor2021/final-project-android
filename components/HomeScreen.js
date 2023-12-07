@@ -18,6 +18,7 @@ import UserContext from './context/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getAllRestaurants, deleteRestaurant} from './Model'
 import RestaurantListItem from './RestaurantListItem';
+import { useIsFocused } from '@react-navigation/native';
 function HomeScreen({ navigation }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const { signedState } = useContext(UserContext)
@@ -25,6 +26,8 @@ function HomeScreen({ navigation }) {
   const [search, setSearch] = useState()
   const [user, setUser] = useState()
   const [restaurants, setRestaurants] = useState({})
+const isFocused = useIsFocused();
+
   const handleLogoutPress = async () => {
     signOut(auth).catch(error => console.log(error))
     AsyncStorage.setItem('loggedInUser', '').catch(error => console.log(error))
@@ -49,10 +52,10 @@ function HomeScreen({ navigation }) {
 
 
   useEffect(() => {
-    getAllRestaurants().then((restaurants) => {
+    const restaurants = getAllRestaurants().then((restaurants) => {
       setRestaurants(restaurants)
     }).catch((error) => console.error(error))
-  },[])
+  },[isFocused])
 
 
 
@@ -96,12 +99,8 @@ const handleAddRestaurantPress = () => {
     setMenuVisible(!menuVisible)
   }
 
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View>
-        <Button style={styles.detailsButton} text="Take me to Detailssss...." onPress={handleDetailPress}></Button>
-      </View>
       <View>
         <FlatList data={restaurants} renderItem={({item}) => {
           console.log("this is the ite from the list view"+item)

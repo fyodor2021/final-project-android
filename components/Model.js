@@ -66,8 +66,8 @@ import React, { useEffect } from 'react';
             db.transaction(tx => {
                 tx.executeSql('SELECT * FROM restaurants', null,
                 (txObj, results) => {console.log(results.rows._array) 
-                    res(results.rows._array);},
-                (txObj,error) => {rej(error);})
+                    res(results.rows._array)},
+                (txObj,error) => {rej(error)})
             });
 
         } );
