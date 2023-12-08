@@ -8,10 +8,11 @@ import {
   View,
   TextInput,
   FlatList,
+  TouchableWithoutFeedback
 } from 'react-native';
 import { useState, useLayoutEffect, useContext, useEffect } from 'react';
 import Button from './Button'
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import { signOut } from 'firebase/auth';
 import { auth } from './firebase-auth';
 import UserContext from './context/UserContext';
@@ -47,7 +48,7 @@ function HomeScreen({ navigation }) {
 
   const handleSeachSubmit = () => {
     findRestaurantBySearch(search)
-  } 
+  }
 
   const handleDetailPress = () => {
     navigation.navigate('Detail')
@@ -64,12 +65,12 @@ function HomeScreen({ navigation }) {
 
   navigation.setOptions({
     headerTitle: () => {
-       return <TextInput 
-       value={search} 
-       style={styles.searchInput} 
-       placeholder='Search' 
-       onChange={handleSearchChange} 
-       onSubmitEditing={handleSeachSubmit} />
+      return <TextInput
+        value={search}
+        style={styles.searchInput}
+        placeholder='Search'
+        onChange={handleSearchChange}
+        onSubmitEditing={handleSeachSubmit} />
     },
     headerTitleContainerStyle: {
       marginLeft: 0
@@ -97,9 +98,7 @@ function HomeScreen({ navigation }) {
 
 
   const handleMenuToggle = async () => {
-    const loggedInUser = await AsyncStorage.getItem('loggedInUser')
-    const user = JSON.parse(loggedInUser)
-    setUser(user)
+    console.log(menuVisible)
     setMenuVisible(!menuVisible)
   }
   const handleDeletePress = () => {
@@ -107,82 +106,81 @@ function HomeScreen({ navigation }) {
     setDeleteConfirmation(false)
     setDeleteConfirmed(true)
   }
+  const handleAboutPress = () => {
+    navigation.navigate('About')
+  }
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View>
-        <FlatList data={restaurants} renderItem={({ item }) => {
-          return <RestaurantListItem navigation={navigation} item={item} />
-        }} keyExtractor={(item) => item.id} />
-      </View>
-      {menuVisible && (
-        <View style={styles.menuWrapper}>
-          <View style={styles.menuContainer}>
-            <TouchableOpacity style={styles.menuItemHeader}>
-              <View style={styles.imageContainer}>
-                <Image style={{ height: 30, width: 40 }} source={require('../assets/user.png')} />
-              </View>
-              <View style={styles.menuTextHeaderContainer}>
-                {/* <Text style={styles.menuTextHeader}>{user.email}</Text> */}
-                <Text style={styles.menuTextHeader}>vedoorbbs@gmail.com</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ ...styles.menuItem }} onPress={handleAddRestaurantPress}>
-              <View style={styles.imageContainer}>
-                <Image style={{ height: 40, width: 30 }} source={require('../assets/restaurant-icon.png')}></Image>
-              </View>
-              <View >
-                <Text style={styles.menuText}>Add a Restaurant</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ ...styles.menuItem }}>
-              <View style={styles.imageContainer}>
-                <Image style={{ height: 25, width: 30 }} source={require('../assets/calling.png')}></Image>
-              </View>
-              <View >
-                <Text style={styles.menuText}>Contact Support</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ ...styles.menuItem }}>
-              <View style={styles.imageContainer}>
-                <Image style={{ height: 30, width: 30 }} source={require('../assets/about-icon.png')}></Image>
-              </View>
-              <View >
-                <Text style={styles.menuText}>About</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ ...styles.menuItem }} onPress={handleLogoutPress}>
-              <View style={styles.imageContainer}>
-                <Image style={{ height: 30, width: 30 }} source={require('../assets/sign-out.png')}></Image>
-              </View>
-              <View >
-                <Text style={styles.menuText}>Sign out</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
+      <ScrollView>
+        <View>
+          <FlatList data={restaurants} renderItem={({ item }) => {
+            return <RestaurantListItem navigation={navigation} item={item} />
+          }} keyExtractor={(item) => item.id} />
         </View>
-      )}
+      </ScrollView>
+        {menuVisible && (
+          <TouchableWithoutFeedback onPress={handleMenuToggle}>
+          <View style={styles.menuWrapper}>
+            <View style={styles.menuContainer}>
+              <TouchableOpacity style={styles.menuItemHeader}>
+                <View style={styles.imageContainer}>
+                  <Image style={{ height: 30, width: 40 }} source={require('../assets/user.png')} />
+                </View>
+                <View style={styles.menuTextHeaderContainer}>
+                  {/* <Text style={styles.menuTextHeader}>{user.email}</Text> */}
+                  <Text style={styles.menuTextHeader}>vedoorbbs@gmail.com</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity style={{ ...styles.menuItem }} onPress={handleAddRestaurantPress}>
+                <View style={styles.imageContainer}>
+                  <Image style={{ height: 40, width: 30 }} source={require('../assets/restaurant-icon.png')}></Image>
+                </View>
+                <View >
+                  <Text style={styles.menuText}>Add a Restaurant</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity style={{ ...styles.menuItem }} onPress={handleAboutPress}>
+                <View style={styles.imageContainer}>
+                  <Image style={{ height: 30, width: 30 }} source={require('../assets/about-icon.png')}></Image>
+                </View>
+                <View >
+                  <Text style={styles.menuText}>About</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity style={{ ...styles.menuItem }} onPress={handleLogoutPress}>
+                <View style={styles.imageContainer}>
+                  <Image style={{ height: 30, width: 30 }} source={require('../assets/sign-out.png')}></Image>
+                </View>
+                <View >
+                  <Text style={styles.menuText}>Sign out</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+          </TouchableWithoutFeedback>
+        )}
       {deleteConfirmation && (
 
-            <View style={styles.confirmationWrapper}>
-              <View style={styles.confirmationContainer}>
-                <View>
-                  <View>
-                    <Text style={{color: 'white'}}>Are you sure you want to delete this item?</Text>
-                  </View>
-                  <View style={{display:'flex', flexDirection:'row', justifyContent: 'space-between', margin: 20,}}>
-                    <Button text='Yes' style={{...styles.button, backgroundColor: 'red'}} onPress={handleDeletePress}></Button>
-                    <Button text='No' style={{...styles.button, backgroundColor: 'green'}} onPress={() => setDeleteConfirmation(false)}>No</Button>
-                  </View>
-                </View>
+        <View style={styles.confirmationWrapper}>
+          <View style={styles.confirmationContainer}>
+            <View>
+              <View>
+                <Text style={{ color: 'white' }}>Are you sure you want to delete this item?</Text>
+              </View>
+              <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', margin: 20, }}>
+                <Button text='Yes' style={{ ...styles.button, backgroundColor: 'red' }} onPress={handleDeletePress}></Button>
+                <Button text='No' style={{ ...styles.button, backgroundColor: 'green' }} onPress={() => setDeleteConfirmation(false)}>No</Button>
               </View>
             </View>
+          </View>
+        </View>
       )}
     </SafeAreaView>
   );
 };
 const screen = Dimensions.get('window');
 const styles = StyleSheet.create({
-  confirmationWrapper:{
+  confirmationWrapper: {
     position: 'absolute',
     top: 0,
     bottom: 0,
@@ -190,7 +188,7 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  confirmationContainer:{
+  confirmationContainer: {
 
     width: '50%',
     height: '15%',

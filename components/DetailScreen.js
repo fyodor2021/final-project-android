@@ -2,10 +2,7 @@ import Button from './Button';
 import Model, { deleteReview, getRestaurantReviews } from './Model';
 import {
   Text,
-  SafeAreaView,
   StyleSheet,
-  FlatList,
-  ActivityIndicator,
   Image,
   TouchableOpacity,
   View, Dimensions,

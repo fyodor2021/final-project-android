@@ -37,8 +37,8 @@ export default function EditScreen({ navigation, route }) {
     },
     headerLeft: () => {
       return <TouchableOpacity style={{ marginLeft: 0 }} onPress={() => navigation.goBack()}>
-        <View style={styles.backButton} >
-          <Image source={require('../images/goBack.png')} style={{ ...styles.backImage, width: 50, height: 50 }} />
+        <View>
+          <Image source={require('../images/goBack.png')} style={{width: 50, height: 50 }} />
         </View>
       </TouchableOpacity> 
     }
@@ -47,7 +47,6 @@ export default function EditScreen({ navigation, route }) {
     try {
       await ImagePicker.requestCameraPermissionsAsync();
       const imageResults = await ImagePicker.launchCameraAsync({
-        cameraType: ImagePicker.CameraType.back,
         allowsEditing: true,
         quality: 1
       });
