@@ -25,6 +25,7 @@ import ShareScreen from './components/ShareScreen';
 import UserContext, { UserProvider } from './components/context/UserContext'
 import RestaurantContext, { RestaurantProvider } from './components/context/RestaurantContext';
 import { initializeDatabase } from './components/Model'
+import AboutScreen from './components/AboutScreen';
 const navStack = createStackNavigator();
 
 export default function App() {
@@ -61,6 +62,7 @@ export const Layout = () => {
               }}
             /> */}
             <navStack.Screen name="Home" component={HomeScreen} />
+            <navStack.Screen name="About" component={AboutScreen}/>
             <navStack.Screen name="Detail" component={DetailScreen} />
             <navStack.Screen name="Edit" component={EditScreen} />
             <navStack.Screen name="Rate" component={RateScreen} />

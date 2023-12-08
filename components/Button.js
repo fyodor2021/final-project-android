@@ -1,13 +1,7 @@
 import {
     Text,
-    SafeAreaView,
     StyleSheet,
-    FlatList,
-    ActivityIndicator,
-    Image,
     TouchableOpacity,
-    View,
-    Dimensions,
   } from 'react-native';
 
 
