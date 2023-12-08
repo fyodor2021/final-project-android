@@ -1,5 +1,5 @@
 import Button from './Button';
-import Model, { deleteReview, getAllReviews } from './Model'
+import Model, { deleteReview, getRestaurantReviews } from './Model';
 import {
   Text,
   SafeAreaView,
@@ -13,15 +13,16 @@ import {
 } from 'react-native';
 import React,{ useEffect, useState } from 'react'
 import { useIsFocused } from '@react-navigation/native';
-import { useState } from 'react'
 
 
 export default function DetailScreen({ navigation, route}) {
   const [menuVisible, setMenuVisible] = useState(false)
-    const [menuVisible, setMenuVisible] = useState(false)
   const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5])
   const [reviews, setReviews] = useState([])
   const isFocused = useIsFocused();
+  const [restaurantId, setResturantId] = useState()
+  const [item, setItem] = useState()
+  
   navigation.setOptions({
     title: '',
     headerStyle: {
@@ -48,93 +49,55 @@ export default function DetailScreen({ navigation, route}) {
     }
   })
 
-  const Share = () => {
-    navigation.navigate('Share')
-  }
-  const Rate = () => {
-    navigation.navigate('Rate')
-  }
-  const fetchReviews = () => {
-    getAllReviews().then((reviews) => setReviews(reviews))
+  const fetchReviews = (id) => {
+    setResturantId(id)
+    getRestaurantReviews(id).then((reviews) => setReviews(reviews))
                     .catch((error) => console.error(error))
 
   }
-
-  
-  useEffect(() => {
+    useEffect(() => {
     if (isFocused){
-      fetchReviews()
+      const item = route.params.item
+      setItem(item)
+      const id = route.params.item.id
+     
+      fetchReviews(id)
     }
   }, [isFocused]);
 
   const handleDelete = (id) => {
     deleteReview(id)
-    fetchReviews()
+    fetchReviews(restaurantId)
   }
   const handleEdit = (review)=>{
-    navigation.navigate('Rate', {mode:'update', review:review})
+    navigation.navigate('Rate', {mode:'update', review, item})
 
   }
-
-
 
   const handleDirection = () => {
-    const label= '1909 lawernce ave e';
-    const mapsURL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(label)}`;
-
-      Linking.openURL(mapsURL).catch(err => console.error('An error occurred', err));
-       
-  }
-
+    const destination = route.params.item.address;
+    const mapsURL = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}`;
   
-return <View style={styles.wrapper}>
+    Linking.openURL(mapsURL)
+      .catch(err => console.error('An error occurred', err));
+  };
+  
+  
+return <ScrollView style={styles.wrapper}>
     <View>
       <View style={styles.container}>
-      <View style={{marginRight:4}}>
-        <Image style={styles.image} source={{uri: route.params.item.image_data}} />
-      </View>
+        <View style={{marginRight:4}}>
+          <Image style={styles.image} source={{uri: route.params.item.image_data}} />
+        </View>
         <View style={styles.container2}>
-          <Text style={styles.text}>Name: {route.params.item.name}</Text>
-          <Text style={styles.text}>Address: {route.params.item.address}</Text>
-          <Text style={styles.text}>Phone Number: {route.params.item.phone_number}</Text>
-          <Text style={styles.text}>Restaurant Tags: {route.params.item.tags}</Text>
+            <Text style={styles.text}>Name: {route.params.item.name}</Text>
+            <Text style={styles.text}>Address: {route.params.item.address}</Text>
+            <Text style={styles.text}>Phone Number: {route.params.item.phone_number}</Text>
+            <Text style={styles.text}>Restaurant Tags: {route.params.item.tags}</Text>
         </View>
       </View>
     </View>
-    {menuVisible && (
-      <View style={styles.menuWrapper}>
-        <View style={styles.menuContainer}>
-          <TouchableOpacity style={{ ...styles.menuItem }}>
-            <View style={styles.imageContainer}>
-              <Image style={{ height: 30, width: 30}} source={require('../assets/share-icon.png')}></Image>
-            </View>
-            <View >
-              <Text style={styles.menuText}>Share</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={{ ...styles.menuItem }} >
-            <View style={styles.imageContainer}>
-              <Image style={{ height: 30, width: 30 }} source={require('../assets/edit-icon.png')}></Image>
-            </View>
-            <View >
-              <Text style={styles.menuText}>Edit </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity style={{ ...styles.menuItem }}>
-            <View style={styles.imageContainer}>
-              <Image style={{ height: 30, width: 30 }} source={require('../assets/rate-icon.png')}></Image>
-            </View>
-            <View >
-              <Text style={styles.menuText}>Rate</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
-    )}
-
-  </View>
-
-}
+    <View>
         {reviews.map((item, key) => {
             return (
                 <View  key={key}>
@@ -174,9 +137,38 @@ return <View style={styles.wrapper}>
     
       </View>
       <Button style={{ ...styles.button, marginBottom: 20 }} text="Direction" onPress={handleDirection}></Button>
+    {menuVisible && (
+      <View style={styles.menuWrapper}>
+        <View style={styles.menuContainer}>
+          <TouchableOpacity style={{ ...styles.menuItem }} onPress={() => navigation.navigate('Share',{item})}>
+            <View style={styles.imageContainer}>
+              <Image style={{ height: 30, width: 30}} source={require('../assets/share-icon.png')}></Image>
+            </View>
+            <View >
+              <Text style={styles.menuText}>Share</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ ...styles.menuItem }}  onPress={() => navigation.navigate('Edit')}>
+            <View style={styles.imageContainer}>
+              <Image style={{ height: 30, width: 30 }} source={require('../assets/edit-icon.png')}></Image>
+            </View>
+            <View >
+              <Text style={styles.menuText}>Edit </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ ...styles.menuItem }} onPress={() => navigation.navigate('Rate', {mode:'add', item})}>
+            <View style={styles.imageContainer}>
+              <Image style={{ height: 30, width: 30 }} source={require('../assets/rate-icon.png')}></Image>
+            </View>
+            <View >
+              <Text style={styles.menuText}>Rate</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+    )}
 
-    </View>
-    </View>
+
   </ScrollView>
 
 
@@ -234,7 +226,7 @@ const styles = StyleSheet.create({
     justifyContent : 'space-between' ,
     borderRadius: 15,
     marginTop: 15,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
     backgroundColor: '#ecf0f1',
     justifyContent: 'space-between',
   },
@@ -293,3 +285,6 @@ const styles = StyleSheet.create({
   }
 
 });
+
+
+
