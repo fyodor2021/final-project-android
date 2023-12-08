@@ -10,7 +10,7 @@ import React, { useEffect } from 'react';
           )
         );
       db.transaction(tx => tx.executeSql(
-          'CREATE TABLE IF NOT EXISTS restaurants (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, address TEXT, phone_number TEXT, description TEXT, tags TEXT, image_data TEXT )'
+          'CREATE TABLE IF NOT EXISTS restaurants (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, street_name TEXT,street_number INTEGER, phone_number TEXT, description TEXT, tags TEXT, image_data TEXT )'
         ) , null, (txObj,results) => console.log(results),
         (txObj,error) => console.log(error)
   
@@ -20,16 +20,15 @@ import React, { useEffect } from 'react';
         )
       );
   
-        
+
+
     }
     
 
     // db.transaction(tx => tx.executeSql(
-    //       'DROP TABLE IF EXISTS users'
-    //     )
-    //   );
-
-    
+    //     'DROP TABLE IF EXISTS restaurants'
+    //   )
+    // );
 
     export const addUser = (input) => {
         const { email, username, password, address, birth_date } = input;
@@ -65,7 +64,7 @@ import React, { useEffect } from 'react';
         return new Promise ( (res, rej) => {
             db.transaction(tx => {
                 tx.executeSql('SELECT * FROM restaurants', null,
-                (txObj, results) => {console.log(results.rows._array) 
+                (txObj, results) => {
                     res(results.rows._array)},
                 (txObj,error) => {rej(error)})
             });
@@ -74,17 +73,18 @@ import React, { useEffect } from 'react';
     }
 
     export const addRestaurant = (input) => {
-        const { name, address, phone_number, description, tags, image_data } = input;
+        const { name, streetNum,streetName, phone_number, description, tags, image_data } = input;
         
         db.transaction(tx => {
-            tx.executeSql(`INSERT INTO restaurants (name, address, phone_number, description, tags,image_data) VALUES (?,?,?,?,?,?)`, 
-            [name, address, phone_number, description, tags, image_data ], 
+            tx.executeSql(`INSERT INTO restaurants (name, street_Name,street_Number, phone_number, description, tags,image_data) VALUES (?,?,?,?,?,?,?)`, 
+            [name, streetName,streetNum, phone_number, description, tags, image_data ], 
             (txObj, results) => console.log(`${name} is added to restaurants`),
                (txObj,error) => console.log(error) )
         })
     }
 
     export const deleteRestaurant = (id) => {
+
         db.transaction(tx => {
             tx.executeSql('DELETE FROM restaurants where id=?' , [id],
             (txObj, results) => console.log(`resturant is deleted`),
@@ -93,13 +93,38 @@ import React, { useEffect } from 'react';
         })
     }
 
+    export const searchRestaurant = (searchTerm) => {
+        if(searchTerm != ''){
+            return new Promise ( (res, rej) => {
+                db.transaction(tx => {
+                    tx.executeSql("SELECT * FROM restaurants WHERE name LIKE '%' || ? || '%' OR tags LIKE '%' || ? || '%';",[searchTerm,searchTerm]
+                    ,
+                    (txObj, results) => {console.log('search results' + results.rows._array) 
+                        res(results.rows._array)},
+                    (txObj,error) => {rej(error)})
+                });
+    
+            } );
+        }else{
+           return getAllRestaurants();
+        }
+       
+    }
     export const updateRestaurant = ( input,id) => {
-        const { name, address, phone_number, description, tags, image_data } = input;
+        const {
+            nameData,
+            streetNumberData,
+            streetNameData,
+            phoneNumberData,
+            descData,
+            tagsData,
+            imageUriData
+          } = input;
       
         db.transaction(tx => {
           tx.executeSql(
-            'UPDATE restaurants SET name=?, address=?, phone_number=?, description=?, tags=?, image_data=? WHERE id=?',
-            [name, address, phone_number, description, tags, image_data, id],
+            'UPDATE restaurants SET name=?, street_name=?, street_number=?, phone_number=?, description=?, tags=?, image_data=? WHERE id=?',
+            [nameData, streetNameData,streetNumberData, phoneNumberData, descData, tagsData, imageUriData, id],
             (txObj, results) => {
               console.log(`Restaurant with ID ${id} is updated`);
             },

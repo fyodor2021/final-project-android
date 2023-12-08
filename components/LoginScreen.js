@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
   View,
+  ScrollView,
 } from 'react-native';
 import { useContext } from 'react'
 import { TextInput } from 'react-native-gesture-handler';
@@ -54,7 +55,7 @@ export default function LoginScreen({ navigation }) {
   const handleRegister = () => {
     navigation.navigate('Registration')
   }
-  return <SafeAreaView style={styles.container}>
+  return <ScrollView automaticallyAdjustKeyboardInsets><SafeAreaView style={styles.container}>
     <View style={styles.logoContainer}>
       <View style={styles.rContainer}>
         <Image source={require('../images/ourLogo.png')} style={styles.logoImage}></Image>
@@ -78,7 +79,7 @@ export default function LoginScreen({ navigation }) {
       </View>
       <View>
         <Text style={styles.labels}>Password: </Text>
-        <TextInput value={password} autoCapitalize='none' onChangeText={handlePasswordChange} style={styles.input} />
+        <TextInput value={password} secureTextEntry={true} autoCapitalize='none' onChangeText={handlePasswordChange} style={styles.input} />
       </View>
       <View>
         <Button style={{ ...styles.button, marginTop: 10 }} text="Log in" onPress={handleLoginPress}></Button>
@@ -99,6 +100,7 @@ export default function LoginScreen({ navigation }) {
       </TouchableOpacity>
     </View>
   </SafeAreaView>
+  </ScrollView>
 }
 const screen = Dimensions.get('window');
 

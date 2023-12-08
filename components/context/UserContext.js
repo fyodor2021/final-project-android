@@ -2,8 +2,8 @@ import { createContext, useState } from "react"
 
 const UserContext = createContext(undefined)
 
-function Provider({children}) {
-    const [signedIn, setSignedIn] = useState(false)
+function UserProvider({children}) {
+    const [signedIn, setSignedIn] = useState(true)
     const userValues = {    
         signedState: [signedIn, setSignedIn]
     }
@@ -12,4 +12,4 @@ function Provider({children}) {
     </UserContext.Provider>
 }
 export default UserContext
-export {Provider}
+export {UserProvider}

@@ -15,9 +15,12 @@ import { addRestaurant } from './Model';
 import * as ImagePicker from 'expo-image-picker'
 import imagePlaceholder from '../assets/restaurant-image-placeholder.png'
 import { getMultiFactorResolver } from 'firebase/auth';
+import { updateRestaurant, searchRestaurant} from './Model'
+import { ScrollView } from 'react-native-gesture-handler';
 export default function EditScreen({ navigation, route }) {
-    const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
+  const [name, setName] = useState('');
+  const [streetNum, setStreenNum] = useState('');
+  const [streetName, setStreetName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [desc, setDesc] = useState('');
   const [tags, setTags] = useState('');
@@ -37,7 +40,7 @@ export default function EditScreen({ navigation, route }) {
         <View style={styles.backButton} >
           <Image source={require('../images/goBack.png')} style={{ ...styles.backImage, width: 50, height: 50 }} />
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> 
     }
   })
   const handleCameraUpload = async () => {
@@ -48,7 +51,7 @@ export default function EditScreen({ navigation, route }) {
         allowsEditing: true,
         quality: 1
       });
-  
+
       if (!imageResults.canceled) {
         console.log(imageResults.assets[0].uri);
         await saveImage(imageResults.assets[0].uri);
@@ -58,7 +61,7 @@ export default function EditScreen({ navigation, route }) {
     }
   }
   const handleImageUpload = async (mode) => {
-    if(mode === 'gallary'){
+    if (mode === 'gallary') {
       await ImagePicker.requestMediaLibraryPermissionsAsync();
       console.log("this is the mode" + mode)
 
@@ -69,32 +72,52 @@ export default function EditScreen({ navigation, route }) {
       })
       console.log(" this is the image results" + imageResults)
     }
-    if(!imageResults.canceled){
+    if (!imageResults.canceled) {
       console.log(imageResults.assets[0].uri)
       await saveImage(imageResults.assets[0].uri);
     }
   }
   const saveImage = async (image) => {
-    try{setImageUri(image)}catch(error){console.log(error)}
-  } 
+    try { setImageUri(image) } catch (error) { console.log(error) }
+  }
+
   const handleEditPress = () => {
+    const nameData = name == '' ? route.params.item.name : name
+    const streetNumberData = streetNum == '' ? route.params.item.street_number : streetNum
+    const streetNameData = streetName == '' ? route.params.item.street_name : streetName
+    const phoneNumberData = phoneNumber == '' ? route.params.item.phone_number : phoneNumber
+    const descData = desc == '' ? route.params.item.description : desc
+    const tagsData = tags == '' ? route.params.item.tags : tags
+    const imageUriData = imageUri == '' ? route.params.item.image_data : imageUri
+    const input = {
+      nameData,
+      streetNumberData,
+      streetNameData,
+      phoneNumberData,
+      descData,
+      tagsData,
+      imageUriData
+    }
+    updateRestaurant(input, route.params.item.id)
+    navigation.goBack()
 
   }
   const handleAddPress = () => {
     const restaurant = {
       name,
-      address,
-      phone_number : phoneNumber,
-      description : desc,
+      streetNum,
+      streetName,
+      phone_number: phoneNumber,
+      description: desc,
       tags,
-      image_data : imageUri
+      image_data: imageUri
     }
     console.log(restaurant)
     let empty = false
     for (let key in restaurant) {
       if (restaurant[key] == '') {
         empty = true
-        break; 
+        break;
       }
     }
 
@@ -105,104 +128,117 @@ export default function EditScreen({ navigation, route }) {
       alert('All fields must be filled');
     }
   }
-  const handleNameChange =(event) => {
+  const handleNameChange = (event) => {
     setName(event)
   }
-  const handleAddressChange =(event) => {
-    setAddress(event)
+  const handleStreetNumChange = (event) => {
+    setStreenNum(event)
   }
-  const handlePhoneChange =(event) => {
+  const handleStreetNameChange = (event) => {
+    setStreetName(event)
+  }
+  const handlePhoneChange = (event) => {
     setPhoneNumber(event)
   }
-  const handleDescChange =(event) => {
+  const handleDescChange = (event) => {
     setDesc(event)
   }
-  const handleTagChange =(event) => {
+  const handleTagChange = (event) => {
     setTags(event)
   }
   const getImage = () => {
     handleImageUpload('gallary')
   }
-  return (
-    route.params.restaurant ? (<SafeAreaView style={styles.container}>
-    <View style={styles.backgroundImageContainer}>
-      <ImageBackground source={require('../assets/restaurant-image-placeholder.png')} style={styles.backgroundImage}>
-        <Button style={styles.uploadButton} text='Camera' onPress={handleCameraUpload}></Button>
-        <Button style={styles.uploadButton} text='Upload' onPress={getImage}></Button>
-      </ImageBackground>
+  return (<ScrollView automaticallyAdjustKeyboardInsets>
+   { route.params.item ? (<SafeAreaView style={styles.container}>
+      <View style={styles.backgroundImageContainer}>
+        <ImageBackground source={imageUri ? { uri: imageUri } : { uri: route.params.item.image_data }} style={styles.restaurantPlaceholder}>
+
+          <Button style={styles.uploadButton} text='Camera' onPress={handleCameraUpload}></Button>
+          <Button style={styles.uploadButton} text='Upload' onPress={getImage}></Button>
+        </ImageBackground>
       </View>
       <View>
-      <View>
-        <Text style={styles.labels}>Resturant Name:</Text>
-        <TextInput value={name} autoCapitalize='none' onChangeText={handleNameChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Address: </Text>
-        <TextInput value={address} autoCapitalize='none' onChangeText={handleAddressChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Phone Number:</Text>
-        <TextInput value={phoneNumber} autoCapitalize='none' onChangeText={handlePhoneChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Description: </Text>
-        <TextInput value={desc} autoCapitalize='none' onChangeText={handleDescChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Restaurant Tag:</Text>
-        <TextInput value={tags} autoCapitalize='none' onChangeText={handleTagChange} style={styles.input} />
-      </View>
+        <View>
+          <Text style={styles.labels}>Resturant Name:</Text>
+          <TextInput value={name} autoCapitalize='none' onChangeText={handleNameChange} style={styles.input} placeholder={route.params.item.name} />
+        </View>
+        <View>
+          <Text style={styles.labels}>Address: </Text>
+          <View style={{flexDirection: 'row'}}>
+            <TextInput value={streetNum} autoCapitalize='none' keyboardType="number-pad" onChangeText={handleStreetNumChange} style={{...styles.input, ...styles.addressInputNum}} placeholder={route.params.item.street_number.toString()} />
+            <TextInput value={streetName} autoCapitalize='none' onChangeText={handleStreetNameChange} style={{...styles.input, ...styles.addressInputName}} placeholder={route.params.item.street_name} />
+          </View>
+        </View>
+        <View>
+          <Text style={styles.labels}>Phone Number:</Text>
+          <TextInput value={phoneNumber} autoCapitalize='none' keyboardType="number-pad" onChangeText={handlePhoneChange} style={styles.input} placeholder={route.params.item.phone_number} />
+        </View>
+        <View>
+          <Text style={styles.labels}>Description: </Text>
+          <TextInput value={desc} autoCapitalize='none' onChangeText={handleDescChange} style={styles.input} placeholder={route.params.item.description} />
+        </View>
+        <View>
+          <Text style={styles.labels}>Restaurant Tag:</Text>
+          <TextInput value={tags} autoCapitalize='none' onChangeText={handleTagChange} style={styles.input} placeholder={route.params.item.tags} />
+        </View>
         <Button style={{ ...styles.button }} text='Edit' onPress={handleEditPress}></Button>
       </View>
-    </SafeAreaView>) : (<SafeAreaView style={styles.container}>
+    </SafeAreaView>
+    ) : (<SafeAreaView style={styles.container}>
       <View style={styles.backgroundImageContainer}>
-      <ImageBackground source={imageUri ? {uri:imageUri} : imagePlaceholder} style={styles.restaurantPlaceholder}>
+        <ImageBackground source={imageUri ? { uri: imageUri } : imagePlaceholder} style={styles.restaurantPlaceholder}>
 
-      <Button style={styles.uploadButton} text='Camera' onPress={handleCameraUpload}></Button>
-        <Button style={styles.uploadButton} text='Upload' onPress={getImage}></Button>
-      </ImageBackground>
+          <Button style={styles.uploadButton} text='Camera' onPress={handleCameraUpload}></Button>
+          <Button style={styles.uploadButton} text='Upload' onPress={getImage}></Button>
+        </ImageBackground>
       </View>
       <View>
-      <View>
-        <Text style={styles.labels}>Resturant Name:</Text>
-        <TextInput value={name} autoCapitalize='none' onChangeText={handleNameChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Address: </Text>
-        <TextInput value={address} autoCapitalize='none' onChangeText={handleAddressChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Phone Number:</Text>
-        <TextInput value={phoneNumber} autoCapitalize='none' onChangeText={handlePhoneChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Description: </Text>
-        <TextInput value={desc} autoCapitalize='none' onChangeText={handleDescChange} style={styles.input} />
-      </View>
-      <View>
-        <Text style={styles.labels}>Restaurant Tag:</Text>
-        <TextInput value={tags} autoCapitalize='none' onChangeText={handleTagChange} style={styles.input} />
-      </View>
+        <View>
+          <Text style={styles.labels}>Resturant Name:</Text>
+          <TextInput value={name} autoCapitalize='none' onChangeText={handleNameChange} style={styles.input} />
+        </View>
+        <View>
+          <Text style={styles.labels}>Address: </Text>
+          <View style={{flexDirection: 'row'}}>
+            <TextInput value={streetNum} autoCapitalize='none' keyboardType="number-pad" onChangeText={handleStreetNumChange} style={{...styles.input, ...styles.addressInputNum}}/>
+            <TextInput value={streetName} autoCapitalize='none' keyboardType="number-pad" onChangeText={handleStreetNameChange} style={{...styles.input, ...styles.addressInputName}}/>
+          </View>
+        </View>
+        <View>
+          <Text style={styles.labels}>Phone Number:</Text>
+          <TextInput value={phoneNumber} autoCapitalize='none' keyboardType="number-pad" onChangeText={handlePhoneChange} style={styles.input} />
+        </View>
+        <View>
+          <Text style={styles.labels}>Description: </Text>
+          <TextInput value={desc} autoCapitalize='none' onChangeText={handleDescChange} style={styles.input} />
+        </View>
+        <View>
+          <Text style={styles.labels}>Restaurant Tag:</Text>
+          <TextInput value={tags} autoCapitalize='none' onChangeText={handleTagChange} style={styles.input} />
+        </View>
         <Button style={{ ...styles.button }} text='Add' onPress={handleAddPress}></Button>
       </View>
     </SafeAreaView>
 
-    )
-    )
+    )}
+    </ScrollView>
+  )
 }
 
 const screen = Dimensions.get('window');
 const styles = StyleSheet.create({
-  restaurantPlaceholder:{
+
+  restaurantPlaceholder: {
     width: screen.width,
     height: screen.height / 4,
-    justifyContent:'center',
+    justifyContent: 'center',
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'row'
-  },  
-  backgroundImageContainer:{
-    width:screen.width,
+  },
+  backgroundImageContainer: {
+    width: screen.width,
     alignItems: 'center'
   },
   input: {
@@ -214,6 +250,14 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     padding: 10
+  },
+  addressInputNum:{
+    width: screen.width/7,
+    marginRight: 0
+  },
+  addressInputName:{
+    marginLeft:5,
+    width: screen.width/1.6
   },
   labels: {
     fontSize: 20,
