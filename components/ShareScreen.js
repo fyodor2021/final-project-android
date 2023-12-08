@@ -12,9 +12,7 @@ import {
   } from 'react-native';
 import email from 'react-native-email';
 
-
-
-export default function ShareScreen({navigation}){
+export default function ShareScreen({navigation, route}){
   navigation.setOptions({
     title:'',
     headerStyle: {
@@ -33,30 +31,30 @@ export default function ShareScreen({navigation}){
           </TouchableOpacity>
     }
   })
+  const item = route.params.item
   const shareViaEmail = () => {
     const to = [''];
     email(to, {
       subject: 'Check Out This Resturant!',
       body: `Hello there,
-      I visited this {resturant name} today and it was an amazing experince
+      I visited ${item.name} today and it was an amazing experince
       Check it out if you are intersted !
-      Name: {resturant name}
-      Address: {resturant address}`,
+      Name: ${item.name}
+      Address: ${item.address} 
+      https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address)}`,
     }).catch(console.error);
     };
 
     const shareViaTwitter = () => {
-    const resturantUrl = 'https://aboutreact.com'
+    const restaurantUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address)}`;
+
     const tweetBody = `Hello there,
-    I visited this {resturant name} today and it was an amazing experince
+    I visited ${item.name} today and it was an amazing experince
     Check it out if you are intersted !
-    Name: {resturant name}
+    Name: ${item.name}
     Address: {resturant address}`
-    let para = [];
-    para.push('url=' + encodeURI(resturantUrl));
-    para.push('text=' + encodeURI(tweetBody));
-      const url ='https://twitter.com/intent/tweet?' + para.join('&');
-      Linking.openURL(url)
+    const url = `https://twitter.com/intent/tweet?url=${encodeURIComponent(restaurantUrl)}&text=${encodeURIComponent(tweetBody)}`;
+    Linking.openURL(url)
         .then((data) => {
           console.log(data);
         })
@@ -64,14 +62,15 @@ export default function ShareScreen({navigation}){
           console.log(e);
         });
     };
+   
 
     const shareViaFacebook = () => {
-      const restaurantUrl = 'https://aboutreact.com'
+      const restaurantUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address)}`;
       const postBody = `Hello there,
       I visited this {resturant name} today and it was an amazing experince
       Check it out if you are intersted !
-      Name: {resturant name}
-      Address: {resturant address}`
+      Name: ${item.name}
+      Address: ${item.address}`
       let para = [];
       para.push('u=' + encodeURI(restaurantUrl));
       para.push('post=' + encodeURI(postBody));
@@ -89,7 +88,7 @@ export default function ShareScreen({navigation}){
 
     return (
       <SafeAreaView style={styles.container}>
-      <Image style={styles.image} source={require('../images/fries.png')}/>
+      <Image style={styles.image} source={{uri: route.params.item.image_data}} />
       <View style={styles.container2} >
            <TouchableOpacity style={[styles.button, { backgroundColor: '#3b5998' }]}  onPress={shareViaFacebook}>
               <Image source={require('../images/facebook.png')} style={styles.icon} />
@@ -116,14 +115,11 @@ const styles = StyleSheet.create({
 container: {
   flex: 1,
   backgroundColor: '#ecf0f1',
-  padding: 8,
   justifyContent: 'space-between'
 },  
 container2:{
   marginVertical : 50,
   marginHorizontal: 5,
-
-
 },
   button: {
   marginTop: 10,
@@ -133,7 +129,6 @@ container2:{
   borderWidth: 1,
   borderColor: 'black',
   alignItems: 'center',
-
 },
 icon :{
   width: 50,

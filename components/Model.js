@@ -111,12 +111,15 @@ import React, { useEffect } from 'react';
       };
 
     export const getAllReviews = () => {
-        db.transaction(tx =>{
-            tx.executeSql('SELECT * FROM reviews', null,
-            // (txObj,results) =>{ return results.rows._array})
-            (txObj,results) =>console.log(results.rows._array) )
-
+        return new Promise ( (resolve, reject ) =>{
+            db.transaction(tx =>{
+                tx.executeSql('SELECT * FROM reviews', null,
+                (txObj,results) =>{ resolve(results.rows._array) },
+                (txObj,error) => {reject(error)})
+    
+            })
         })
+       
     }
 
 
@@ -152,15 +155,19 @@ import React, { useEffect } from 'react';
         })
       } 
 
-    export const getRestaurantReviews = (id)=> {
-        db.transaction( tx => {
-            tx.executeSql(
+    export const getRestaurantReviews = (id) => {
+        return new Promise ( (resolve, reject ) =>{
+            db.transaction(tx =>{
+                tx.executeSql(
                 'SELECT * FROM reviews WHERE restaurant_id=?',[id],
-            // (txObj,results) =>{ return results.rows._array})
-            (txObj,results) =>console.log(results.rows._array) )           
-        } )
+                (txObj,results) =>{ resolve(results.rows._array) },
+                (txObj,error) => {reject(error)})
+    
+            })
+        })
+       
+    }
 
-    } 
     export const getUserReviews = (id)=> {
         db.transaction( tx => {
             tx.executeSql(
