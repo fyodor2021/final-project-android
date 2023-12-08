@@ -3,7 +3,7 @@ import { createContext, useState } from "react"
 const UserContext = createContext(undefined)
 
 function UserProvider({children}) {
-    const [signedIn, setSignedIn] = useState(true)
+    const [signedIn, setSignedIn] = useState(false)
     const userValues = {    
         signedState: [signedIn, setSignedIn]
     }

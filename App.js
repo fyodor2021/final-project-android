@@ -51,16 +51,6 @@ export const Layout = () => {
       <navStack.Navigator>
         {signedIn ? (
           <>
-            {/* <navStack.Screen
-              name="Splash"
-              component={SplashScreen}
-              options={{
-                backBehavior: 'none',
-                headerLeft: null,
-                headerShown: false,
-                gestureEnabled: false
-              }}
-            /> */}
             <navStack.Screen name="Home" component={HomeScreen} />
             <navStack.Screen name="About" component={AboutScreen}/>
             <navStack.Screen name="Detail" component={DetailScreen} />
@@ -70,6 +60,16 @@ export const Layout = () => {
           </>
         ) : (
           <>
+              <navStack.Screen
+              name="Splash"
+              component={SplashScreen}
+              options={{
+                backBehavior: 'none',
+                headerLeft: null,
+                headerShown: false,
+                gestureEnabled: false
+              }}
+            />
             <navStack.Screen
               name="Login"
               component={LoginScreen}
