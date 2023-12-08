@@ -16,11 +16,13 @@ import { useLayoutEffect } from 'react'
 import {createUserWithEmailAndPassword} from 'firebase/auth'
 import {database,auth} from './firebase-auth'
 import {set,ref} from 'firebase/database'
+import { ScrollView } from 'react-native-gesture-handler';
 const RegistrationScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [address, setAddress] = useState('')
+  const [streetNum, setStreenNum] = useState('')
+  const [streetName, setStreetName] = useState('')
   const [dateOfBirth, setDateOfBirth] = useState('')
   useLayoutEffect(() => {
 
@@ -38,8 +40,11 @@ const RegistrationScreen = ({ navigation }) => {
   const handlePasswordChange = (event) => {
     setPassword(event)
   }
-  const handleAddressChange = (event) => {
-    setAddress(event)
+  const handleStreetNumChange = (event) => {
+    setStreenNum(event)
+  } 
+   const handleStreetNameChange = (event) => {
+    setStreetName(event)
   }
   const handleDateChange = (event) => {
     setDateOfBirth(event)
@@ -64,7 +69,7 @@ const RegistrationScreen = ({ navigation }) => {
     navigation.navigate('Login')
   }
 
-  return <SafeAreaView style={styles.container}>
+  return <ScrollView automaticallyAdjustKeyboardInsets><SafeAreaView style={styles.container}>
     <View style={styles.logoContainer}>
       <View style={styles.rContainer}>
         <Image source={require('../images/ourLogo.png')} style={styles.logoImage}></Image>
@@ -95,9 +100,12 @@ const RegistrationScreen = ({ navigation }) => {
         <TextInput value={password} autoCapitalize='none' onChangeText={handlePasswordChange} style={styles.input} />
       </View>
       <View>
-        <Text style={styles.labels}>Address: </Text>
-        <TextInput value={address} autoCapitalize='none' onChangeText={handleAddressChange} style={styles.input} />
-      </View>
+          <Text style={styles.labels}>Address: </Text>
+          <View style={{flexDirection: 'row'}}>
+            <TextInput value={streetNum} autoCapitalize='none' keyboardType="number-pad" onChangeText={handleStreetNumChange} style={{...styles.input, ...styles.addressInputNum}}/>
+            <TextInput value={streetName} autoCapitalize='none' onChangeText={handleStreetNameChange} style={{...styles.input, ...styles.addressInputName}} />
+          </View>
+        </View>
       <View>
         <Text style={styles.labels}>Date of Birth:</Text>
         <TextInput value={dateOfBirth} autoCapitalize='none' onChangeText={handleDateChange} style={styles.input} />
@@ -110,6 +118,7 @@ const RegistrationScreen = ({ navigation }) => {
     </View>
 
   </SafeAreaView>
+  </ScrollView>
 }
 const screen = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -124,11 +133,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
 
   },
+  labels: {
+    fontSize: 20,
+    margin: 50,
+    marginBottom: 5,
+    marginTop: 5,
+    color: 'gray',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
   logoContainer: {
     display: 'flex',
     flexDirection: 'row',
     backgroundColor: 'white',
     margin: 20,
+    marginLeft: 30,
     borderRadius: 39,
     width: screen.width / 2,
     height: screen.height / 5
@@ -156,6 +175,24 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     resizeMode: 'contain',
 
+  },
+  input: {
+    width: screen.width / 1.3,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    marginRight: 40,
+    marginLeft: 40,
+    height: 40,
+    borderRadius: 20,
+    padding: 10
+  },
+  addressInputNum:{
+    width: screen.width/7,
+    marginRight: 0
+  },
+  addressInputName:{
+    marginLeft:5,
+    width: screen.width/1.6
   },
 
   button: {
