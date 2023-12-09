@@ -23,7 +23,7 @@ import { useIsFocused } from '@react-navigation/native';
 import RestaurantContext from './context/RestaurantContext';
 
 
-function HomeScreen({ navigation }) {
+function HomeScreen({ navigation, route }) {
   const [menuVisible, setMenuVisible] = useState(false)
   const { signedState } = useContext(UserContext)
 
@@ -127,7 +127,7 @@ function HomeScreen({ navigation }) {
                   <Image style={{ height: 30, width: 40 }} source={require('../assets/user.png')} />
                 </View>
                 <View style={styles.menuTextHeaderContainer}>
-                  <Text style={styles.menuTextHeader}>{user.email}</Text>
+                  <Text style={styles.menuTextHeader}>{route.params.item[0].data.email}</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity style={{ ...styles.menuItem }} onPress={handleAddRestaurantPress}>
