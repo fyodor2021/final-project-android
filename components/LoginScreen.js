@@ -44,7 +44,7 @@ export default function LoginScreen({ navigation }) {
         const user = records.filter(record => record.key == userCred.user.uid)
         await AsyncStorage.setItem('loggedInUser', JSON.stringify(user[0].data))
         setSignedIn(true)
-        navigation.navigate('Home')
+        navigation.navigate('Home',{item:user})
       } catch (error) {
         console.log(error)
       }
