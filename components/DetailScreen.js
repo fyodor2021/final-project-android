@@ -72,11 +72,12 @@ export default function DetailScreen({ navigation, route}) {
   }
 
   const handleDirection = () => {
-    const destination = route.params.item.address;
-    const mapsURL = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}`;
+    // const destination = route.params.item.address;
+    // const mapsURL = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}`;
   
-    Linking.openURL(mapsURL)
-      .catch(err => console.error('An error occurred', err));
+    // Linking.openURL(mapsURL)
+    //   .catch(err => console.error('An error occurred', err));
+    navigation.navigate('Destination', {item})
   };
   
   
@@ -88,7 +89,7 @@ return <ScrollView style={styles.wrapper}>
         </View>
         <View style={styles.container2}>
             <Text style={styles.text}>Name: {route.params.item.name}</Text>
-            <Text style={styles.text}>Address: {route.params.item.address}</Text>
+            <Text style={styles.text}>Address:{route.params.item.street_number} {route.params.item.street_name}</Text>
             <Text style={styles.text}>Phone Number: {route.params.item.phone_number}</Text>
             <Text style={styles.text}>Restaurant Tags: {route.params.item.tags}</Text>
         </View>
@@ -133,7 +134,7 @@ return <ScrollView style={styles.wrapper}>
             )})}
     
       </View>
-      <Button style={{ ...styles.button, marginBottom: 20 }} text="Direction" onPress={handleDirection}></Button>
+      <Button style={{ ...styles.button, marginBottom: 20 }} text="Show Location" onPress={handleDirection}></Button>
     {menuVisible && (
       <View style={styles.menuWrapper}>
         <View style={styles.menuContainer}>

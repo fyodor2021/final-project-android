@@ -32,6 +32,7 @@ export default function ShareScreen({navigation, route}){
     }
   })
   const item = route.params.item
+  const address = `${item.street_number} ${item.street_name}`
   const shareViaEmail = () => {
     const to = [''];
     email(to, {
@@ -40,19 +41,19 @@ export default function ShareScreen({navigation, route}){
       I visited ${item.name} today and it was an amazing experince
       Check it out if you are intersted !
       Name: ${item.name}
-      Address: ${item.address} 
-      https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address)}`,
+      Address: ${item.street_number} ${item.street_name}
+      https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`,
     }).catch(console.error);
     };
 
     const shareViaTwitter = () => {
-    const restaurantUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address)}`;
+    const restaurantUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 
     const tweetBody = `Hello there,
     I visited ${item.name} today and it was an amazing experince
     Check it out if you are intersted !
     Name: ${item.name}
-    Address: {resturant address}`
+    Address: ${item.street_number} ${item.street_name}`
     const url = `https://twitter.com/intent/tweet?url=${encodeURIComponent(restaurantUrl)}&text=${encodeURIComponent(tweetBody)}`;
     Linking.openURL(url)
         .then((data) => {
@@ -65,12 +66,12 @@ export default function ShareScreen({navigation, route}){
    
 
     const shareViaFacebook = () => {
-      const restaurantUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address)}`;
+      const restaurantUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
       const postBody = `Hello there,
       I visited this {resturant name} today and it was an amazing experince
       Check it out if you are intersted !
       Name: ${item.name}
-      Address: ${item.address}`
+      Address: ${item.street_number} ${item.street_name}`
       let para = [];
       para.push('u=' + encodeURI(restaurantUrl));
       para.push('post=' + encodeURI(postBody));

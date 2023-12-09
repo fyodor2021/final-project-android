@@ -22,6 +22,7 @@ import DetailScreen from './components/DetailScreen';
 import EditScreen from './components/EditScreen';
 import RateScreen from './components/RateScreen';
 import ShareScreen from './components/ShareScreen';
+import DestinationScreen from './components/DestinationScreen';
 import UserContext, { UserProvider } from './components/context/UserContext'
 import RestaurantContext, { RestaurantProvider } from './components/context/RestaurantContext';
 import { initializeDatabase } from './components/Model'
@@ -57,6 +58,8 @@ export const Layout = () => {
             <navStack.Screen name="Edit" component={EditScreen} />
             <navStack.Screen name="Rate" component={RateScreen} />
             <navStack.Screen name="Share" component={ShareScreen} />
+            <navStack.Screen name="Destination" component={DestinationScreen} />
+
           </>
         ) : (
           <>
