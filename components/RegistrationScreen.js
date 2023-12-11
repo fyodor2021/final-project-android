@@ -58,10 +58,10 @@ const RegistrationScreen = ({ navigation }) => {
         email,
         username,
         password,
-        address,
+        address : streetNum + " " + streetName,
         dateOfBirth
       })
-      console.log('user registered successfully');
+      alert('user registered successfully');
     } catch (e) {
       console.log(e);
     }
