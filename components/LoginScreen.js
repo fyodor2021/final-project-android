@@ -18,6 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { database, auth } from './firebase-auth'
 import { ref, once, get } from 'firebase/database'
 export default function LoginScreen({ navigation }) {
+  console.disableYellowBox = true;
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const { signedState } = useContext(UserContext)
@@ -31,12 +32,14 @@ export default function LoginScreen({ navigation }) {
   const handleLoginPress = async () => {
     try {
       const userCred = await signInWithEmailAndPassword(auth, email, password)
+      console.log(userCred)
       let records = []
       const usersRef = ref(database, `users`)
       await get(usersRef).then(snapshot => {
         snapshot.forEach(childSnapshot => {
           const key = childSnapshot.key
           const data = childSnapshot.val()
+          console.log(data)
           records.push({ "key": key, "data": data })
         })
       })

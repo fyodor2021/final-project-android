@@ -145,14 +145,6 @@ return <ScrollView style={styles.wrapper}>
               <Text style={styles.menuText}>Share</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style={{ ...styles.menuItem }}  onPress={() => navigation.navigate('Edit')}>
-            <View style={styles.imageContainer}>
-              <Image style={{ height: 30, width: 30 }} source={require('../assets/edit-icon.png')}></Image>
-            </View>
-            <View >
-              <Text style={styles.menuText}>Edit </Text>
-            </View>
-          </TouchableOpacity>
           <TouchableOpacity style={{ ...styles.menuItem }} onPress={() => navigation.navigate('Rate', {mode:'add', item})}>
             <View style={styles.imageContainer}>
               <Image style={{ height: 30, width: 30 }} source={require('../assets/rate-icon.png')}></Image>

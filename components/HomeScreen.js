@@ -24,6 +24,7 @@ import RestaurantContext from './context/RestaurantContext';
 
 
 function HomeScreen({ navigation, route }) {
+  console.disableYellowBox = true
   const [menuVisible, setMenuVisible] = useState(false)
   const { signedState } = useContext(UserContext)
 
